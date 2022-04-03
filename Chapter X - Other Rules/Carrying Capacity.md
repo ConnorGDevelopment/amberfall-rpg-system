@@ -1,7 +1,4 @@
-# Strength
-Strength represents your physical power.
-
-## Carrying Capacity
+# Carrying Capacity
 A character's Carrying Capacity is the amount of weight they can carry on their person without adversely hindering their movement, assuming the items being carried do not themselves hinder a character's movement.
 
 > The 'Spirit of the Law' on Carrying Capacity:
@@ -12,7 +9,7 @@ A character's Carrying Capacity is the amount of weight they can carry on their 
 
     Carrying Capacity = Strength Score * 4
 
-### Encumberance
+## Encumberance
 Characters are capable of carrying an amount of weight that exceeds their Carrying Capacity but they receive the Encumbered condition, the effects of each Encumberance Level are detailed below.
 
 | Level | Weight Threshold | Effects |
@@ -24,7 +21,7 @@ Characters are capable of carrying an amount of weight that exceeds their Carryi
 | 5 | More than 8 times Strength Score | Character is Immobilized and Physical Skill Checks are automatically failed |
 
 
-## Overhead Lift Capacity
+# Overhead Lift Capacity
 The amount of weight a character can readily lift above their head.
 
 > The 'Spirit of the Law' on Overhead Lift Capacity:
@@ -35,7 +32,7 @@ The amount of weight a character can readily lift above their head.
 
     Overhead Lift Capacity = Strength Score * 2
 
-## Deadlift Capacity
+# Deadlift Capacity
 The amount of weight a character can readily pick up from their feet and raise to waist height.
 
 > The 'Spirit of the Law' on Deadlift Capacity:
@@ -46,7 +43,7 @@ The amount of weight a character can readily pick up from their feet and raise t
 
     Deadlift Capacity = Strength Score * 10
 
-## Push and Pull Strength
+# Push and Pull Strength
 The amount of force a character could easily exert when pushing or pulling an object.
 
 > The 'Spirit of the Law' on Push and Pull Strength:
