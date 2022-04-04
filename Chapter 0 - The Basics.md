@@ -49,7 +49,7 @@ There are two kinds of Checks, Stat and Skill. Stat Checks are used for general 
 
 Skill Checks are used for when practice or training would meaningfully influence the outcome and/or the task would be challenging or even impossible for someone without experience.
 
-> A Lifeguard's training in CPR significantly impacts their ability to resuscitate an unconscious person more than their physical strength.
+> A Lifeguard's training in CPR significantly impacts their ability to resuscitate an unconscious person more than their lung capacity.
 
 To resolve a Stat Check, roll a d100. If you rolled a number equal to or less than your score in the Stat then you succeed. If you rolled a number greater than your score in the Stat than you fail.
 
@@ -60,6 +60,5 @@ Rolling a 1 is considered a Critical Success and things go almost miraculously w
 > For Players, rolling a 1 on a d100 is significantly rarer than rolling a 20 on a d20, so it should be celebrated a lot more. However, rolling a 1 does not give anyone but the DM the ability to warp reality. A Critical Success on Persuasion doesn't mean an evil Lich automatically becomes your best friend and you swiftly destroy the plot of your campaign. That being said, your DM can make a miracle happen, many ancient evils lack meaningful companionship and a solid support network.
 
 > For DM's, rolling a 100 on a d100 is also significantly rarer than rolling a 1 on a d20. It should be devastating but not unfun. A Critical Failure on Stealth while trying to sneak through a Dragon's castle shouldn't immediately end with the Dragon showing up and killing the whole party, because that sucks. It should at a minimum though, end with the party running for their lives through the castle while you shout 'Leeeeeeeeeeeeeeeroy Jenkins' at them.
-
 
 Skill Checks are resolved the same way as Stat Checks except if you don't have Proficiency in that Skill then you only succeed if you roll a number equal to or lower than half your score in the associated Stat, rounded down.
