@@ -30,10 +30,14 @@ When multiple **Entities** in a group make the same **Check**, it may be treated
 
 ## Teamwork Checks
 
-When multiple **Entities** in a group are contributing towards a shared goal, but using different **Skills**, it may be treated as a Teamwork Check. In a Teamwork Check, the result is determined by how many Degrees of Success or Failure are achieved collectively by the group. Teamwork Checks ma
+When multiple **Entities** in a group are contributing towards a shared goal, but using different **Skills**, it may be treated as a Teamwork Check. In a Teamwork Check, the result is determined by how many Degrees of Success or Failure are achieved collectively by the group.
 
-### Static vs Dynamic Results
+### Simple vs Scaling
+
+Simple Teamwork Checks have a single result that is either achieved or not achieved. The opposite of this is Scaling Teamwork Checks, where the result may change based on the amount of successes or failures.
 
 ### Additive vs Subtractive
 
-### Weighted & Gated
+In an Additive Teamwork Check, the result is only determined by the total degrees of success. Inversely, Subtractive Teamwork Checks determine their result by subtracting the total degrees of failure from the total degrees of success.
+
+### Weighted & Gated 
