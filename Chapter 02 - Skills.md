@@ -22,10 +22,18 @@ Skill Checks are resolved the same way as Stat Checks except if you don't have *
 
 ### Degrees of Success and Failure
 
-Not all **Checks** are simple pass or fail tests, in these cases the result is determined using Degrees of Success and/or Degrees of Failure. You receive one Degree of Success for every 10% you succeed a **Check** by and one Degree of Failure for every 10% you fail a **Check** by.
+Not all **Checks** are simple pass or fail tests, in these cases the result is determined using Degrees of Success and/or Degrees of Failure. You receive one Degree of Success for passing a **Check** and an additional Degree of Success for every 10% you succeed a **Check** by. Inversely, you receive one Degree of Failure for failing a **Check** and an additional Degree of Failure for every 10% you fail a **Check** by.
 
 ## Group Checks
 
-When multiple **Entities** in a group make the same **Check**, it may be treated as a Group Check. In a Group Check, the entire group gets the same result based on how well the majority of the party performs. If the majority succeeds, everyone succeeds. If the majority fails, everyone fails.
+When multiple **Entities** in a group make the same **Check**, it may be treated as a Group Check. In a Group Check, the result for the entire group is determined by whether or not the majority of the group succeeded or failed their individual **Check**.
 
-> If you're a rogue trying to infiltrate a castle with five armored knights, it may not matter how quiet you are if Sir Clanksalot falls down.
+## Teamwork Checks
+
+When multiple **Entities** in a group are contributing towards a shared goal, but using different **Skills**, it may be treated as a Teamwork Check. In a Teamwork Check, the result is determined by how many Degrees of Success or Failure are achieved collectively by the group. Teamwork Checks ma
+
+### Static vs Dynamic Results
+
+### Additive vs Subtractive
+
+### Weighted & Gated
