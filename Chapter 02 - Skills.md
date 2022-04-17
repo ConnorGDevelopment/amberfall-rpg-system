@@ -20,9 +20,13 @@ To resolve a Stat Check, roll a d100. If you rolled a number equal to or less th
 
 Skill Checks are resolved the same way as Stat Checks except if you don't have **Proficiency** in that **Skill** then you only succeed if you roll a number equal to or lower than half your score in the associated **Stat**, rounded down.
 
-### Degrees of Success and Failure
+### Degrees of Success and Failure (DoS / DoF)
 
 Not all **Checks** are simple pass or fail tests, in these cases the result is determined using Degrees of Success and/or Degrees of Failure. You receive one Degree of Success for passing a **Check** and an additional Degree of Success for every 10% you succeed a **Check** by. Inversely, you receive one Degree of Failure for failing a **Check** and an additional Degree of Failure for every 10% you fail a **Check** by.
+
+## Challenge Modifiers (CM)
+
+An Entity's ability to make **Check** may be enhanced or inhibited by outside forces. In these situations, a percentage known as a Challenge Modifier is added or subtracted from their roll before they determine if they succeeded or failed that **Check**.
 
 ## Group Checks
 
