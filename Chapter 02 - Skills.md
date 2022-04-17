@@ -44,12 +44,22 @@ When multiple **Entities** in a group make the same **Check**, it may be treated
 
 When multiple **Entities** in a group are contributing towards a shared goal, but using different **Skills**, it may be treated as a Teamwork Check. In a Teamwork Check, the result is determined by how many Degrees of Success or Failure are achieved collectively by the group.
 
-### Simple vs Scaling
+### Entity-driven vs Task-driven
 
-Simple Teamwork Checks have a single result that is either achieved or not achieved. The opposite of this is Scaling Teamwork Checks, where the result may change based on the amount of successes or failures.
+There are two types of Teamwork Checks, Entity-driven and Task-driven. 
 
-### Additive vs Subtractive
+In an Entity-driven Teamwork Check, each **Entity** determines how they will contribute and makes a **Check** with a corresponding **Stat** or **Skill**. 
 
-In an Additive Teamwork Check, the result is only determined by the total degrees of success. Inversely, Subtractive Teamwork Checks determine their result by subtracting the total degrees of failure from the total degrees of success.
+In a Task-driven Teamwork Check, there are specific tasks that must be completed and each **Entity** chooses a **Stat** or **Skill** they will make their **Check** with from a set of applicable **Stats** and **Skills** for that **Check**.
 
-### Weighted & Gated 
+### Static Results vs Dynamic Results
+
+A Teamwork Check may have a specific outcome that is or isn't achieved, known as a Static Result, or the outcome may depend on the group's performance, known as a Dynamic Result.
+
+### Tally Method vs Net Method
+
+The result of a Teamwork Check may be determined by counting the total number of **Degrees of Success**, known as the Tally Method, or it may be determined by subtracting the total number of **Degrees of Failure** from the total number of **Degrees of Success**, known as the Net Method.
+
+### Weighted Tasks and Checks
+
+When evaluating a group's performance, a multiplier may be applied to the number of **Degrees of Success** and/or **Degrees of Failure** achieved in a certain task or by individuals using certain **Stats** or **Skills**.
