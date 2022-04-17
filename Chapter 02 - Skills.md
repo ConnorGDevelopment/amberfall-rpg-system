@@ -62,4 +62,4 @@ The result of a Teamwork Check may be determined by counting the total number of
 
 ### Weighted Tasks and Checks
 
-When evaluating a group's performance, a multiplier may be applied to the number of **Degrees of Success** and/or **Degrees of Failure** achieved in a certain task or by individuals using certain **Stats** or **Skills**.
+When evaluating a group's performance, a multiplier may be applied to the number of **Degrees of Success** and/or **Degrees of Failure** achieved in a certain task or by **Entities** using certain **Stats** or **Skills**.
