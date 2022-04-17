@@ -28,6 +28,14 @@ Not all **Checks** are simple pass or fail tests, in these cases the result is d
 
 An Entity's ability to make **Check** may be enhanced or inhibited by outside forces. In these situations, a percentage known as a Challenge Modifier is added or subtracted from their roll before they determine if they succeeded or failed that **Check**.
 
+## Contested Checks
+
+When an Entity does something that another Entity has a chance to avoid or resist, a Contested Check is made. In a Contested Check, the Defending Entity makes a **Check** with the Opposing Entity's Challenge Modifier. 
+
+To calculate the **Challenge Modifier** applied by an **Entity's** **Stat** or **Skill**, use the following formula:
+
+> Stat/Skill % - 50% = Challenge Modifier
+
 ## Group Checks
 
 When multiple **Entities** in a group make the same **Check**, it may be treated as a Group Check. In a Group Check, the result for the entire group is determined by whether or not the majority of the group succeeded or failed their individual **Check**.
