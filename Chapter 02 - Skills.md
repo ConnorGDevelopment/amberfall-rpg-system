@@ -2,7 +2,7 @@
 
 Skills are narrow applications of an **Entity's** **Stats** and are broken into two categories, Basic and Advanced. An **Entity** may receive training or experience in a Skill from a variety of sources, which is referred to as **Proficiency**.
 
-Basic Skills can be attempted by anyone regardless of their **Proficiency**, while Advanced Skills can only be attempted by an **Entity** with **Proficiency** in that Skill.
+Basic Skills can be attempted by any **Entity**, regardless of their **Proficiency**, while Advanced Skills can only be attempted by an **Entity** with **Proficiency** in that Skill.
 
 ## Checks
 
