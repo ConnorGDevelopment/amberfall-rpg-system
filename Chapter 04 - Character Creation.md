@@ -12,16 +12,15 @@ The final step of making a **Character** is determining your starting **Stats**.
 
 ### Gritty
 
-
-| Point Pool Size | 25 Points |
+| Point Pool Size | 27 Points |
 | --------------- | --------- |
 | Stat Score      | Price     |
-| 20              | +4        |
-| 25              | +2        |
-| 30              | 0         |
+| 20              | +2        |
+| 25              | 0         |
+| 30              | -2        |
 | 35              | -4        |
 | 40              | -7        |
-| 45              | -11       |
-| 50              | -15       |
+| 45              | -12       |
+| 50              | -19       |
 
 ## Boons

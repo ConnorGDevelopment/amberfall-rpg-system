@@ -30,7 +30,7 @@ An Entity's ability to make **Check** may be enhanced or inhibited by outside fo
 
 ## Contested Checks
 
-When an Entity does something that another Entity has a chance to avoid or resist, a Contested Check is made. In a Contested Check, the Defending Entity makes a **Check** with the Opposing Entity's Challenge Modifier. 
+When an Entity does something that another Entity has a chance to avoid or resist, a Contested Check is made. In a Contested Check, the Defending Entity makes a **Check** with the Opposing Entity's Challenge Modifier.
 
 To calculate the **Challenge Modifier** applied by an **Entity's** **Stat** or **Skill**, use the following formula:
 
@@ -46,9 +46,9 @@ When multiple **Entities** in a group are contributing towards a shared goal, bu
 
 ### Entity-driven vs Task-driven
 
-There are two types of Teamwork Checks, Entity-driven and Task-driven. 
+There are two types of Teamwork Checks, Entity-driven and Task-driven.
 
-In an Entity-driven Teamwork Check, each **Entity** determines how they will contribute and makes a **Check** with a corresponding **Stat** or **Skill**. 
+In an Entity-driven Teamwork Check, each **Entity** determines how they will contribute and makes a **Check** with a corresponding **Stat** or **Skill**.
 
 In a Task-driven Teamwork Check, there are specific tasks that must be completed and each **Entity** chooses a **Stat** or **Skill** they will make their **Check** with from a set of applicable **Stats** and **Skills** for that **Check**.
 
@@ -63,3 +63,131 @@ The result of a Teamwork Check may be determined by counting the total number of
 ### Weighted Tasks and Checks
 
 When evaluating a group's performance, a multiplier may be applied to the number of **Degrees of Success** and/or **Degrees of Failure** achieved in a certain task or by **Entities** using certain **Stats** or **Skills**.
+
+## Basic Skills
+
+### Athletics (Str)
+
+The ability to perform any physical feat that is aided by proper form, such as deadlifting or long jumping.
+
+### Intimidate (Str)
+
+The ability to posture and flex to frighten or coerce another **Entity**.
+
+### Acrobatics (Dex)
+
+The ability to perform graceful or precise movements, such as traipsing or walking a tightrope.
+
+### Sleight of Hand (Dex)
+
+The ability to pickpocket another **Entity** or to hide the performance of certain hand gestures.
+
+### Stealth (Dex)
+
+The ability to move as to not be detected.
+
+### Search (Int)
+
+The ability to effectively examine the contents of an object or room.
+
+### Inspect (Int)
+
+The ability to determine the non-magical properties or functions of an object or mechanism.
+
+### Religion (Int)
+
+The ability to recall information about religious organizations and divine powers.
+
+### History (Int)
+
+The ability to recall and interpret historical information.
+
+### Nature (Int)
+
+The ability to recall information about plants, animals, environments, and other natural phenomena.
+
+### Animal Handling (Wis)
+
+The ability to interact with or train an animal or similar.
+
+### Insight (Wis)
+
+The ability to gauge the emotional state or motives of an **Entity**.
+
+### Perception (Wis)
+
+The ability to notice subtle changes around you and spot hidden objects and **Entities**.
+
+### Survival (Wis)
+
+The ability to track **Entities** in addition to finding food and shelter.
+
+### Medicine (Wis)
+
+The ability to perform first aid.
+
+### Deception (Cha)
+
+The ability to actively or passively lie.
+
+### Persuasion (Cha)
+
+The ability to coerce or manipulate another **Entity**.
+
+### Command (Cha)
+
+The ability to threaten or order another **Entity**.
+
+### Gossip (Cha)
+
+The ability to gather information via small talk.
+
+### Haggle (Cha)
+
+The ability to negotiate for a better price or deal.
+
+## Advanced Skills
+
+### Pick Lock (Dex)
+
+The ability to open locks or bypass mechanisms.
+
+### Shadowing (Dex)
+
+The ability to follow someone unnoticed.
+
+### Arcana (Int)
+
+The ability to identify spells and their effects in adddition to the magical properties of an object.
+
+### Lip Reading (Int)
+
+The ability to understand what an **Entity** is saying based on facial movements.
+
+### Disguise (Int)
+
+The ability to dress as and mimic another **Entity**.
+
+### Investigation (Int)
+
+The ability to interpret and use clues.
+
+### Psionics (Int)
+
+### Occult (Int)
+
+### Channeling (Wis)
+
+### Magic Sense (Wis)
+
+### Public Speaking (Wis)
+
+### Performance (Cha)
+
+### Etiquette (Cha)
+
+### Guile (Cha)
+
+### Blather (Cha)
+
+### Networking (Cha)
