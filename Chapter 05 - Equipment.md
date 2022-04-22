@@ -110,17 +110,18 @@ The amount of force a character could easily exert when pushing or pulling an ob
 
 | Armor Name | Armor Type | Defense Value | Strength Required | Stealth | Weight | Cost |
 | ---------- | ---------- | ------------- | ----------------- | ------- | ------ | ---- |
-| Leather         | Light  | 5%  | -   | -            | 10 lb. | 3s   |
-| Studded Leather | Light  | 10% | -   | -            | 13 lb. | 5s   |
-| Hide            | Medium | 10% | -   | -            | 12 lb. | 7s   |
-| Chain Shirt     | Medium | 10% | -   | -            | 20 lb. | 1g   |
-| Scale Mail      | Medium | 15% | -   | Disadvantage | 45 lb. | 5g   |
-| Breastplate     | Medium | 15% | -   | -            | 20 lb. | 10g  |
-| Half Plate      | Medium | 20% | -   | -            | 40 lb. | 15g  |
-| Ring Mail       | Heavy  | 45% | -   | Disadvantage | 40 lb. | 25g  |
-| Chain Mail      | Heavy  | 55% | 45% | Disadvantage | 55 lb. | 50g  |
-| Splint          | Heavy  | 60% | 50% | Disadvantage | 60 lb. | 75g  |
-| Plate           | Heavy  | 65% | 55% | Disadvantage | 65 lb. | 100g |
+| Leather         | Light  | 5%   | -   | -            | 10 lb. | 2s |
+| Studded Leather | Light  | 10%  | -   | -            | 13 lb. | 3s |
+| Hide            | Medium | 10%  | -   | -            | 12 lb. | 5s |
+| Chain Shirt     | Medium | 10%  | -   | -            | 20 lb. | 5s |
+| Scale Mail      | Medium | 15%  | -   | Disadvantage | 45 lb. | 7s |
+| Breastplate     | Medium | 15%  | -   | -            | 20 lb. | 1g |
+| Half Plate      | Medium | 20%  | -   | -            | 40 lb. | 2g |
+| Ring Mail       | Heavy  | 45%  | -   | Disadvantage | 40 lb. | 3g |
+| Chain Mail      | Heavy  | 55%  | 45% | Disadvantage | 55 lb. | 4g |
+| Splint          | Heavy  | 60%  | 50% | Disadvantage | 60 lb. | 5g |
+| Plate           | Heavy  | 65%  | 55% | Disadvantage | 65 lb. | 6g |
+| Shield          | Shield | +10% |     |              | 6 lb.  | 5s |
 
 ## Gear
 
