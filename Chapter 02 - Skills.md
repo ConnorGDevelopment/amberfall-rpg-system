@@ -72,7 +72,7 @@ The ability to perform any physical feat that is aided by proper form, such as d
 
 ### Intimidate (Str)
 
-The ability to posture and flex to frighten or coerce another **Entity**.
+The ability to posture and flex to frighten or threaten another **Entity**.
 
 ### Acrobatics (Dex)
 
@@ -80,31 +80,31 @@ The ability to perform graceful or precise movements, such as traipsing or walki
 
 ### Sleight of Hand (Dex)
 
-The ability to pickpocket another **Entity** or to hide the performance of certain hand gestures.
+The ability to pickpocket another **Entity** and to hide the performance of certain hand gestures.
 
 ### Stealth (Dex)
 
-The ability to move as to not be detected.
-
-### Search (Int)
-
-The ability to effectively examine the contents of an object or room.
-
-### Inspect (Int)
-
-The ability to determine the non-magical properties or functions of an object or mechanism.
-
-### Religion (Int)
-
-The ability to recall information about religious organizations and divine powers.
+The ability to move silently or inconspicuously.
 
 ### History (Int)
 
 The ability to recall and interpret historical information.
 
+### Inspect (Int)
+
+The ability to determine the non-magical properties or functions of an object or mechanism.
+
 ### Nature (Int)
 
 The ability to recall information about plants, animals, environments, and other natural phenomena.
+
+### Religion (Int)
+
+The ability to recall information about religious organizations and divine powers.
+
+### Search (Int)
+
+The ability to effectively examine the contents of an object or room.
 
 ### Animal Handling (Wis)
 
@@ -114,6 +114,10 @@ The ability to interact with or train an animal or similar.
 
 The ability to gauge the emotional state or motives of an **Entity**.
 
+### Medicine (Wis)
+
+The ability to perform first aid.
+
 ### Perception (Wis)
 
 The ability to notice subtle changes around you and spot hidden objects and **Entities**.
@@ -122,21 +126,13 @@ The ability to notice subtle changes around you and spot hidden objects and **En
 
 The ability to track **Entities** in addition to finding food and shelter.
 
-### Medicine (Wis)
+### Command (Cha)
 
-The ability to perform first aid.
+The ability to threaten or order another **Entity**.
 
 ### Deception (Cha)
 
 The ability to actively or passively lie.
-
-### Persuasion (Cha)
-
-The ability to coerce or manipulate another **Entity**.
-
-### Command (Cha)
-
-The ability to threaten or order another **Entity**.
 
 ### Gossip (Cha)
 
@@ -145,6 +141,10 @@ The ability to gather information via small talk.
 ### Haggle (Cha)
 
 The ability to negotiate for a better price or deal.
+
+### Persuasion (Cha)
+
+The ability to coerce or manipulate another **Entity**.
 
 ## Advanced Skills
 
@@ -160,10 +160,6 @@ The ability to follow someone unnoticed.
 
 The ability to identify spells and their effects in adddition to the magical properties of an object.
 
-### Lip Reading (Int)
-
-The ability to understand what an **Entity** is saying based on facial movements.
-
 ### Disguise (Int)
 
 The ability to dress as and mimic another **Entity**.
@@ -172,22 +168,46 @@ The ability to dress as and mimic another **Entity**.
 
 The ability to interpret and use clues.
 
-### Psionics (Int)
+### Lip Reading (Int)
+
+The ability to understand what an **Entity** is saying based on facial movements.
 
 ### Occult (Int)
 
-### Channeling (Wis)
+The ability to recall information regarding cults, non-divine extraplanar powers, and rituals.
 
-### Magic Sense (Wis)
+### Psionics (Int)
+
+The ability to identify psychic powers and their effects.
+
+### Concentration (Wis)
+
+The ability to maintain focus on a spell, psychic ability, or any other task.
 
 ### Public Speaking (Wis)
 
-### Performance (Cha)
+The ability to rally or motivate a group of **Entities**.
 
-### Etiquette (Cha)
+### Sixth Sense (Wis)
 
-### Guile (Cha)
+The ability to detect ambient **Unnatural** effects.
 
 ### Blather (Cha)
 
+The ability to hold an **Entity's** attention with small talk.
+
+### Etiquette (Cha)
+
+The ability to operate within the social norms of the higher class.
+
+### Guile (Cha)
+
+The ability to operate within the social norms of the lower class.
+
 ### Networking (Cha)
+
+The ability to identify key figures in an area and form powerful connections.
+
+### Performance (Cha)
+
+The ability to play an instrument, busk, showboat, or otherwise act flamboyantly.
