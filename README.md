@@ -17,3 +17,4 @@ Additionally, many sections of this book are accompanied by an excerpt called a 
 - Advanced Skill: **Skills** that cannot be attempted without **Proficiency**. See Chapter 1, Section 3.
 - Proficiency: Allows you to make a **Skill Check** using the full value of the associated **Stat**, rather than half.
 - Unnatural: Anything that is either Arcane, Divine, or Psionic in nature.
+- Attack Stat: The **Stat** used when making an **Attack** with a **Weapon** or **Spell**.
