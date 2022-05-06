@@ -232,6 +232,7 @@
                     src="/Amber.png"
                     height="2em"
                     width="2em"
+                    class="mx-auto"
                   />
                 </template>
               </v-data-table>
@@ -284,6 +285,8 @@ export default class CharacterPage extends Vue {
     {
       text: 'Proficient',
       value: 'proficient',
+      align: 'center',
+      sortable: false,
     },
   ]
 
