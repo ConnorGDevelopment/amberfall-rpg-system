@@ -29,6 +29,9 @@ export interface ICharacter {
   job: Job,
 
   skills: SkillName[]
+
+  triumph?: number;
+  adversity?: number;
 }
 
 export class Character implements ICharacter {
@@ -45,6 +48,9 @@ export class Character implements ICharacter {
 
   currentHP: number;
 
+  triumph?: number;
+  adversity?: number;
+
   constructor(params: ICharacter) {
     this.name = params.name;
     this.surname = params.surname;
@@ -58,6 +64,9 @@ export class Character implements ICharacter {
     this.skills = params.skills
 
     this.currentHP = this.maxHP;
+
+    this.triumph = params.triumph || 0;
+    this.adversity = params.adversity || 0;
   }
 
 

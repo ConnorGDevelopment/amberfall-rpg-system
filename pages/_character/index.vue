@@ -24,6 +24,34 @@
 
             <v-col cols="auto">
               <v-card outlined>
+                <v-card-subtitle class="text-center pb-0">
+                  Tokens
+                </v-card-subtitle>
+                <v-card-title class="text-center py-0">
+                  <v-btn small icon @click="character.triumph--">
+                    <v-icon color="white"> mdi-minus-box </v-icon>
+                  </v-btn>
+                  <v-icon> mdi-weather-sunset </v-icon> :
+                  {{ character.triumph }}
+                  <v-btn small icon @click="character.triumph++">
+                    <v-icon color="white"> mdi-plus-box </v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-card-title class="text-center py-0">
+                  <v-btn small icon @click="character.adversity--">
+                    <v-icon color="white"> mdi-minus-box </v-icon>
+                  </v-btn>
+                  <v-icon> mdi-weather-pouring </v-icon> :
+                  {{ character.adversity }}
+                  <v-btn small icon @click="character.adversity++">
+                    <v-icon color="white"> mdi-plus-box </v-icon>
+                  </v-btn>
+                </v-card-title>
+              </v-card>
+            </v-col>
+
+            <v-col cols="auto">
+              <v-card outlined>
                 <v-card-subtitle class="text-center pb-0"> HP </v-card-subtitle>
                 <v-card-title class="justify-center py-0">
                   {{ character.currentHP }} / {{ character.maxHP }}
@@ -41,8 +69,16 @@
                     dark
                     prepend-icon="mdi-minus-box"
                     append-outer-icon="mdi-plus-box"
-                    @click:prepend="character.changeHP(-inputHP)"
-                    @click:append-outer="character.changeHP(+inputHP)"
+                    @click:prepend="
+                      inputHP
+                        ? character.changeHP(-inputHP)
+                        : character.changeHP(-1)
+                    "
+                    @click:append-outer="
+                      inputHP
+                        ? character.changeHP(+inputHP)
+                        : character.changeHP(1)
+                    "
                     @focus="inputHP = null"
                   />
                 </v-card-text>
@@ -78,14 +114,28 @@
                         </v-chip>
                       </td>
                       <td>
-                        <v-btn outlined>
-                          {{ stat }}
-                        </v-btn>
+                        <v-hover v-slot="{ hover }">
+                          <v-btn :outlined="!hover" color="white">
+                            <span v-if="!hover">
+                              {{ stat }}
+                            </span>
+                            <v-icon v-else color="black">
+                              mdi-dice-multiple
+                            </v-icon>
+                          </v-btn>
+                        </v-hover>
                       </td>
                       <td>
-                        <v-btn outlined color="secondary">
-                          {{ character.halfStat(name) }}
-                        </v-btn>
+                        <v-hover v-slot="{ hover }">
+                          <v-btn :outlined="!hover" color="secondary">
+                            <span v-if="!hover">
+                              {{ character.halfStat(name) }}
+                            </span>
+                            <v-icon v-else color="white">
+                              mdi-dice-multiple
+                            </v-icon>
+                          </v-btn>
+                        </v-hover>
                       </td>
                       <td class="no-select">
                         {{ stat - 50 }}
@@ -135,6 +185,24 @@
                 :items="skills"
                 :search="skillSearch"
               >
+                <template #[`item.name`]="{ item }">
+                  <v-row justify="space-between" align="center" no-gutters>
+                    {{ item.name }}
+                    <v-hover v-slot="{ hover }">
+                      <v-btn
+                        :outlined="!hover"
+                        color="white"
+                        width="2rem"
+                        height="2rem"
+                        min-width="0"
+                      >
+                        <v-icon :color="hover ? 'black' : 'white'">
+                          mdi-dice-multiple
+                        </v-icon>
+                      </v-btn>
+                    </v-hover>
+                  </v-row>
+                </template>
                 <template #[`item.stat`]="{ item }">
                   <v-chip
                     label
