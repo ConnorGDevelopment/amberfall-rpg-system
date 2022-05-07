@@ -4,6 +4,7 @@
       <v-card>
         <v-card-title>
           <v-row no-gutters>
+            <!-- Avatar -->
             <v-col cols="auto">
               <v-avatar size="128">
                 <v-img
@@ -13,6 +14,7 @@
               </v-avatar>
             </v-col>
 
+            <!-- Name -->
             <v-col>
               <v-card-title class="text-h3 no-select">
                 {{ character.name }} {{ character.surname }}
@@ -24,6 +26,29 @@
 
             <v-col cols="auto">
               <v-card outlined>
+                <v-card-text>
+                  <v-btn @click="roll()"> Roll </v-btn>
+                  <v-row no-gutters style="color: white">
+                    <SlotMachine
+                      :list="tensDie"
+                      :trigger="rollTrigger"
+                      :height="100"
+                      :width="100"
+                    />
+                    <SlotMachine
+                      :list="onesDie"
+                      :trigger="rollTrigger"
+                      :height="100"
+                      :width="100"
+                    />
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <!-- Tokens -->
+            <v-col cols="auto">
+              <v-card outlined>
                 <v-card-subtitle class="text-center pb-0">
                   Tokens
                 </v-card-subtitle>
@@ -31,25 +56,26 @@
                   <v-btn small icon @click="character.triumph--">
                     <v-icon color="white"> mdi-minus-box </v-icon>
                   </v-btn>
-                  <v-icon> mdi-weather-sunset </v-icon> :
+                  <v-icon> mdi-trophy </v-icon> :
                   {{ character.triumph }}
                   <v-btn small icon @click="character.triumph++">
                     <v-icon color="white"> mdi-plus-box </v-icon>
                   </v-btn>
                 </v-card-title>
                 <v-card-title class="text-center py-0">
-                  <v-btn small icon @click="character.adversity--">
+                  <v-btn small icon @click="character.ruin--">
                     <v-icon color="white"> mdi-minus-box </v-icon>
                   </v-btn>
-                  <v-icon> mdi-weather-pouring </v-icon> :
-                  {{ character.adversity }}
-                  <v-btn small icon @click="character.adversity++">
+                  <v-icon> mdi-trophy-broken </v-icon> :
+                  {{ character.ruin }}
+                  <v-btn small icon @click="character.ruin++">
                     <v-icon color="white"> mdi-plus-box </v-icon>
                   </v-btn>
                 </v-card-title>
               </v-card>
             </v-col>
 
+            <!-- HP -->
             <v-col cols="auto">
               <v-card outlined>
                 <v-card-subtitle class="text-center pb-0"> HP </v-card-subtitle>
@@ -90,6 +116,7 @@
 
         <v-card-text class="flex-row">
           <v-row no-gutters>
+            <!-- Stats -->
             <v-card outlined>
               <v-simple-table dark>
                 <template #default>
@@ -148,6 +175,7 @@
 
             <v-spacer />
 
+            <!-- Skills -->
             <v-card outlined>
               <v-card-title>
                 <span class="pr-2"> Skills </span>
@@ -228,7 +256,7 @@
                 </template>
                 <template #[`item.proficient`]="{ item }">
                   <v-img
-                    v-if="character.skills.includes(item.name)"
+                    v-if="character.proficiency.includes(item.name)"
                     src="/Amber.png"
                     height="2em"
                     width="2em"
@@ -246,10 +274,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { SlotMachine } from '@puckwang/vue-slot-machine'
 import { charStore, skillStore } from '~/store'
-import { Character } from '~/store/chars'
+import { Character } from '~/model/character'
 
-@Component
+@Component({
+  components: { SlotMachine },
+})
 export default class CharacterPage extends Vue {
   genCharacter() {
     const characterData = charStore.character(this.$route.params.character)
@@ -261,6 +292,7 @@ export default class CharacterPage extends Vue {
   }
 
   public character = this.genCharacter()
+
   public inputHP = null
 
   public skills = skillStore.skills
@@ -318,6 +350,26 @@ export default class CharacterPage extends Vue {
       color: 'pink lighten-1',
     },
   ]
+
+  genDice(diceMin: number, diceMax: number): { text: string; color: string }[] {
+    const dice: { text: string; color: string }[] = []
+    for (let i = diceMin; i <= diceMax; i++) {
+      dice.push({
+        text: `${i}`,
+        color: '#FFFFFF',
+      })
+    }
+    return dice
+  }
+
+  public tensDie: { text: string; color: string }[] = this.genDice(0, 9)
+  public onesDie: { text: string; color: string }[] = this.genDice(0, 9)
+
+  public rollTrigger: Date | null = null
+
+  roll() {
+    this.rollTrigger = new Date()
+  }
 }
 </script>
 

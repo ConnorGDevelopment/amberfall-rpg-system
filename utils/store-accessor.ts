@@ -2,8 +2,8 @@
 import { Store } from 'vuex'
 import { getModule } from 'vuex-module-decorators'
 
-import CharStore from '~/store/chars'
-import SkillStore from '~/store/skills';
+import CharStore from '~/store/char-store'
+import SkillStore from '~/store/skill-store';
 
 let charStore: CharStore;
 let skillStore: SkillStore

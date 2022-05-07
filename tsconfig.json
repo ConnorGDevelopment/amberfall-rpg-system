@@ -30,7 +30,11 @@
       "@types/node",
       "@nuxtjs/vuetify"
     ],
-    "importHelpers": true
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types/"
+    ],
+    "importHelpers": true,
   },
   "exclude": [
     "node_modules",

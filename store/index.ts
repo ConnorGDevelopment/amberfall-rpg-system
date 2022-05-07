@@ -1,7 +1,7 @@
 import {Store} from 'vuex'
 import { initialiseStores } from '~/utils/store-accessor'
-import CharStore from '~/store/chars'
-import SkillStore from '~/store/skills'
+import CharStore from '~/store/char-store'
+import SkillStore from '~/store/skill-store'
 
 const initializer = (store: Store<any>) => initialiseStores(store)
 export const plugins = [initializer]

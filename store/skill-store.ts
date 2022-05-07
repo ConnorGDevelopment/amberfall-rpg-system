@@ -1,5 +1,5 @@
 import { Module, VuexModule } from 'vuex-module-decorators'
-import { StatBlock } from './chars'
+import Skill from '~/model/skill'
 
 const skillMap = {
   basic: {
@@ -65,12 +65,6 @@ const skillMap = {
   }
 }
 
-interface Skill {
-  name: string,
-  stat: keyof StatBlock,
-  advanced: boolean
-}
-
 function skillGen(skillGroup: {
   strength: string[],
   dexterity: string[],
@@ -97,12 +91,10 @@ function skillGen(skillGroup: {
 
 
 @Module({
-  name: 'skills',
+  name: 'skill-store',
   stateFactory: true,
   namespaced: true,
 })
 export default class SkillStore extends VuexModule {
   skills: Skill[] = [...skillGen(skillMap.basic, false), ...skillGen(skillMap.advanced, true)]
 }
-
-export type SkillName = SkillStore['skills'][number]['name']
