@@ -27,19 +27,21 @@
             <v-col cols="auto">
               <v-card outlined>
                 <v-card-text>
-                  <v-btn @click="startRoll()"> Roll </v-btn>
+                  <v-btn @click="startRollerOne()"> Roll </v-btn>
                   <v-row no-gutters style="color: white">
                     <SlotMachine
-                      :list="tensDie"
-                      :trigger="rollTrigger"
+                      :list="rollerChars"
+                      :trigger="rollerOneTrigger"
                       :height="100"
                       :width="100"
+                      @onComplete="startRollerTwo"
                     />
                     <SlotMachine
-                      :list="onesDie"
-                      :trigger="rollTrigger"
+                      :list="rollerChars"
+                      :trigger="rollerTwoTrigger"
                       :height="100"
                       :width="100"
+                      @onComplete="rollerFinish"
                     />
                   </v-row>
                 </v-card-text>
@@ -362,13 +364,26 @@ export default class CharacterPage extends Vue {
     return dice
   }
 
-  public tensDie: { text: string; color: string }[] = this.genDice(0, 9)
-  public onesDie: { text: string; color: string }[] = this.genDice(0, 9)
+  public rollerChars: { text: string; color: string }[] = this.genDice(0, 9)
 
-  public rollTrigger: Date | null = null
+  public rollerOneTrigger: Date | null = null
+  public rollerTwoTrigger: Date | null = null
 
-  startRoll() {
-    this.rollTrigger = new Date()
+  public rollerOneValue: any = null
+  public rollerTwoValue: any = null
+
+  startRollerOne() {
+    this.rollerOneTrigger = new Date()
+  }
+
+  startRollerTwo(data: any) {
+    this.rollerOneValue = data
+    this.rollerTwoTrigger = new Date()
+  }
+
+  rollerFinish(data: any) {
+    this.rollerTwoValue = data
+    console.log(`${this.rollerOneValue}${this.rollerTwoValue}`)
   }
 
   // https://github.com/Andy-0414/vue-roller
