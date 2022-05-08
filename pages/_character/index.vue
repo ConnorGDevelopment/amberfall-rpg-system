@@ -27,7 +27,7 @@
             <v-col cols="auto">
               <v-card outlined>
                 <v-card-text>
-                  <v-btn @click="roll()"> Roll </v-btn>
+                  <v-btn @click="startRoll()"> Roll </v-btn>
                   <v-row no-gutters style="color: white">
                     <SlotMachine
                       :list="tensDie"
@@ -367,9 +367,11 @@ export default class CharacterPage extends Vue {
 
   public rollTrigger: Date | null = null
 
-  roll() {
+  startRoll() {
     this.rollTrigger = new Date()
   }
+
+  // https://github.com/Andy-0414/vue-roller
 }
 </script>
 
