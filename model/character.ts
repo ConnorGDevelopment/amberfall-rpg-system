@@ -1,3 +1,4 @@
+import Check from "./check";
 import Job from "~/model/job";
 import StatBlock from "~/model/stat-block";
 import Skill from "~/model/skill";
@@ -94,7 +95,6 @@ export class Character implements ICharacter {
   // HP
   get maxHP(): number {
     const hpFortitudeBonus = Math.floor(Math.abs(this.challengeModifier('fortitude') / 10))
-
     return (hpFortitudeBonus + this.job.bonusHP) * this.level
   }
 
@@ -106,5 +106,9 @@ export class Character implements ICharacter {
     } else if(this.currentHP + amount < 0) {
       this.currentHP = 0
     }
+  }
+
+  statCheck(statName: keyof StatBlock, isHalf?: boolean, method?: Check['method']): Check {
+    return new Check(isHalf ? this.stats[statName] : this.halfStat(statName), method);
   }
 }

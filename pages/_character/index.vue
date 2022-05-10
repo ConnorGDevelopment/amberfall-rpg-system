@@ -28,22 +28,7 @@
               <v-card outlined>
                 <v-card-text>
                   <v-btn @click="startRollerOne()"> Roll </v-btn>
-                  <v-row no-gutters style="color: white">
-                    <SlotMachine
-                      :list="rollerChars"
-                      :trigger="rollerOneTrigger"
-                      :height="100"
-                      :width="100"
-                      @onComplete="startRollerTwo"
-                    />
-                    <SlotMachine
-                      :list="rollerChars"
-                      :trigger="rollerTwoTrigger"
-                      :height="100"
-                      :width="100"
-                      @onComplete="rollerFinish"
-                    />
-                  </v-row>
+                  <v-row no-gutters style="color: white"> </v-row>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -276,13 +261,10 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { SlotMachine } from '@puckwang/vue-slot-machine'
 import { charStore, skillStore } from '~/store'
 import { Character } from '~/model/character'
 
-@Component({
-  components: { SlotMachine },
-})
+@Component
 export default class CharacterPage extends Vue {
   genCharacter() {
     const characterData = charStore.character(this.$route.params.character)
@@ -352,41 +334,6 @@ export default class CharacterPage extends Vue {
       color: 'pink lighten-1',
     },
   ]
-
-  genDice(diceMin: number, diceMax: number): { text: string; color: string }[] {
-    const dice: { text: string; color: string }[] = []
-    for (let i = diceMin; i <= diceMax; i++) {
-      dice.push({
-        text: `${i}`,
-        color: '#FFFFFF',
-      })
-    }
-    return dice
-  }
-
-  public rollerChars: { text: string; color: string }[] = this.genDice(0, 9)
-
-  public rollerOneTrigger: Date | null = null
-  public rollerTwoTrigger: Date | null = null
-
-  public rollerOneValue: any = null
-  public rollerTwoValue: any = null
-
-  startRollerOne() {
-    this.rollerOneTrigger = new Date()
-  }
-
-  startRollerTwo(data: any) {
-    this.rollerOneValue = data
-    this.rollerTwoTrigger = new Date()
-  }
-
-  rollerFinish(data: any) {
-    this.rollerTwoValue = data
-    console.log(`${this.rollerOneValue}${this.rollerTwoValue}`)
-  }
-
-  // https://github.com/Andy-0414/vue-roller
 }
 </script>
 
