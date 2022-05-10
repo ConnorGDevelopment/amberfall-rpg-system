@@ -24,15 +24,6 @@
               </v-card-subtitle>
             </v-col>
 
-            <v-col cols="auto">
-              <v-card outlined>
-                <v-card-text>
-                  <v-btn @click="startRollerOne()"> Roll </v-btn>
-                  <v-row no-gutters style="color: white"> </v-row>
-                </v-card-text>
-              </v-card>
-            </v-col>
-
             <!-- Tokens -->
             <v-col cols="auto">
               <v-card outlined>
@@ -128,16 +119,23 @@
                         </v-chip>
                       </td>
                       <td>
-                        <v-hover v-slot="{ hover }">
-                          <v-btn :outlined="!hover" color="white">
-                            <span v-if="!hover">
-                              {{ stat }}
-                            </span>
-                            <v-icon v-else color="black">
-                              mdi-dice-multiple
-                            </v-icon>
-                          </v-btn>
-                        </v-hover>
+                        <v-menu>
+                          <template #activator="{ on, attrs}">
+                            <v-hover v-slot="{ hover }">
+                              <v-btn :outlined="!hover" color="white" v-bind="attrs" v-on="on">
+                                <span v-if="!hover">
+                                  {{ stat }}
+                                </span>
+                                <v-icon v-else color="black">
+                                  mdi-dice-multiple
+                                </v-icon>
+                              </v-btn>
+                            </v-hover>
+                          </template>
+                          <v-card>
+                            Dice
+                          </v-card>
+                        <v-menu>
                       </td>
                       <td>
                         <v-hover v-slot="{ hover }">
