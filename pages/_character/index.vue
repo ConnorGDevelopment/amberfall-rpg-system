@@ -26,12 +26,17 @@
 
             <!-- Tokens -->
             <v-col cols="auto">
-              <v-card outlined>
+              <v-card outlined class="mr-4">
                 <v-card-subtitle class="text-center pb-0">
                   Tokens
                 </v-card-subtitle>
                 <v-card-title class="text-center py-0">
-                  <v-btn small icon @click="character.triumph--">
+                  <v-btn
+                    small
+                    icon
+                    :disabled="character.triumph === 0"
+                    @click="character.triumph--"
+                  >
                     <v-icon color="white"> mdi-minus-box </v-icon>
                   </v-btn>
                   <v-icon> mdi-trophy </v-icon> :
@@ -40,8 +45,13 @@
                     <v-icon color="white"> mdi-plus-box </v-icon>
                   </v-btn>
                 </v-card-title>
-                <v-card-title class="text-center py-0">
-                  <v-btn small icon @click="character.ruin--">
+                <v-card-title class="text-center pt-0">
+                  <v-btn
+                    small
+                    icon
+                    :disabled="character.ruin === 0"
+                    @click="character.ruin--"
+                  >
                     <v-icon color="white"> mdi-minus-box </v-icon>
                   </v-btn>
                   <v-icon> mdi-trophy-broken </v-icon> :
@@ -114,40 +124,29 @@
                           :color="
                             statChips.find((chip) => chip.stat === name).color
                           "
+                          disabled
+                          class="opacity-fix"
                         >
                           {{ name }}
                         </v-chip>
                       </td>
                       <td>
-                        <v-menu>
-                          <template #activator="{ on, attrs}">
-                            <v-hover v-slot="{ hover }">
-                              <v-btn :outlined="!hover" color="white" v-bind="attrs" v-on="on">
-                                <span v-if="!hover">
-                                  {{ stat }}
-                                </span>
-                                <v-icon v-else color="black">
-                                  mdi-dice-multiple
-                                </v-icon>
-                              </v-btn>
-                            </v-hover>
-                          </template>
-                          <v-card>
-                            Dice
-                          </v-card>
-                        <v-menu>
+                        <DiceButton
+                          :color="'white'"
+                          :hover-color="'black'"
+                          :stat="stat"
+                          @callRoll="roll(name, false, $event)"
+                          @callMenu="openMenu(name, false, $event)"
+                        />
                       </td>
                       <td>
-                        <v-hover v-slot="{ hover }">
-                          <v-btn :outlined="!hover" color="secondary">
-                            <span v-if="!hover">
-                              {{ character.halfStat(name) }}
-                            </span>
-                            <v-icon v-else color="white">
-                              mdi-dice-multiple
-                            </v-icon>
-                          </v-btn>
-                        </v-hover>
+                        <DiceButton
+                          :color="'secondary'"
+                          :hover-color="'white'"
+                          :stat="character.halfStat(name)"
+                          @callRoll="roll(name, true, $event)"
+                          @callMenu="openMenu(name, true, $event)"
+                        />
                       </td>
                       <td class="no-select">
                         {{ stat - 50 }}
@@ -201,19 +200,27 @@
                 <template #[`item.name`]="{ item }">
                   <v-row justify="space-between" align="center" no-gutters>
                     {{ item.name }}
-                    <v-hover v-slot="{ hover }">
-                      <v-btn
-                        :outlined="!hover"
-                        color="white"
-                        width="2rem"
-                        height="2rem"
-                        min-width="0"
-                      >
-                        <v-icon :color="hover ? 'black' : 'white'">
-                          mdi-dice-multiple
-                        </v-icon>
-                      </v-btn>
-                    </v-hover>
+                    <DiceButton
+                      :color="'white'"
+                      :hover-color="'black'"
+                      :width="'2rem'"
+                      :height="'2rem'"
+                      :min-width="0"
+                      @callRoll="
+                        roll(
+                          item.stat,
+                          !character.proficiency.includes(item.name),
+                          $event
+                        )
+                      "
+                      @callMenu="
+                        openMenu(
+                          item.stat,
+                          !character.proficiency.includes(item.name),
+                          $event
+                        )
+                      "
+                    />
                   </v-row>
                 </template>
                 <template #[`item.stat`]="{ item }">
@@ -254,6 +261,17 @@
         </v-card-text>
       </v-card>
     </v-col>
+
+    <DiceMenu
+      :menu="menu"
+      @callRoll="roll(menu.statName, menu.isHalf, $event)"
+    />
+
+    <RollDrawer
+      :drawer="drawer"
+      @callToken="changeToken($event)"
+      @closeDrawer="closeDrawer"
+    />
   </v-row>
 </template>
 
@@ -261,6 +279,8 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { charStore, skillStore } from '~/store'
 import { Character } from '~/model/character'
+import StatBlock from '~/model/stat-block'
+import Check from '~/model/check'
 
 @Component
 export default class CharacterPage extends Vue {
@@ -332,6 +352,77 @@ export default class CharacterPage extends Vue {
       color: 'pink lighten-1',
     },
   ]
+
+  public menu = {
+    show: false,
+    x: 0,
+    y: 0,
+    statName: '',
+    isHalf: false,
+  }
+
+  openMenu(statName: keyof StatBlock, isHalf: boolean, event: any) {
+    this.$nextTick(() => {
+      this.menu = {
+        show: true,
+        x: event.x,
+        y: event.y,
+        statName,
+        isHalf,
+      }
+    })
+  }
+
+  roll(statName: keyof StatBlock, isHalf: boolean, event: any) {
+    if (this.character) {
+      this.drawer = {
+        show: true,
+        check: this.character.statCheck(statName, isHalf, event),
+        clicked: false,
+      }
+    }
+  }
+
+  public drawer: {
+    show: boolean
+    check: null | Check
+    clicked: boolean
+  } = {
+    show: false,
+    check: null,
+    clicked: false,
+  }
+
+  closeDrawer() {
+    this.drawer = {
+      show: false,
+      check: null,
+      clicked: false,
+    }
+  }
+
+  changeToken(event: {
+    tokenName: 'triumph' | 'ruin'
+    operation: 'add' | 'subtract'
+  }) {
+    if (event.tokenName === 'triumph' && this.character) {
+      if (event.operation === 'add') {
+        this.character.triumph++
+        this.drawer.clicked = true
+      } else if (event.operation === 'subtract') {
+        this.character.triumph--
+        this.drawer.clicked = false
+      }
+    } else if (event.tokenName === 'ruin' && this.character) {
+      if (event.operation === 'add') {
+        this.character.ruin++
+        this.drawer.clicked = true
+      } else if (event.operation) {
+        this.character.ruin--
+        this.drawer.clicked = false
+      }
+    }
+  }
 }
 </script>
 

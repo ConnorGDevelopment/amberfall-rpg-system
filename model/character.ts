@@ -41,7 +41,7 @@ export class Character implements ICharacter {
 
   constructor(params: ICharacter) {
     this.name = params.name;
-    this.surname = params.name;
+    this.surname = params.surname;
 
     this.baseStats = params.baseStats;
 
@@ -108,7 +108,7 @@ export class Character implements ICharacter {
     }
   }
 
-  statCheck(statName: keyof StatBlock, isHalf?: boolean, method?: Check['method']): Check {
-    return new Check(isHalf ? this.stats[statName] : this.halfStat(statName), method);
+  statCheck(statName: keyof StatBlock, isHalf?: boolean, method?: Check['rollMethod']): Check {
+    return new Check(isHalf ?  this.halfStat(statName) : this.stats[statName], method);
   }
 }

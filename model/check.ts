@@ -1,13 +1,13 @@
 import rollDice from "./roll";
 
 export default class Check {
-  method: 'advantage' | 'flat' | 'disadvantage' = 'flat';
+  rollMethod: 'advantage' | 'flat' | 'disadvantage' = 'flat';
   log: number[] = [];
 
   get value(): number {
-    if(this.method === 'advantage') {
+    if(this.rollMethod === 'advantage') {
       return Math.min(...this.log)
-    } else if(this.method === 'disadvantage') {
+    } else if(this.rollMethod === 'disadvantage') {
       return Math.max(...this.log)
     } else {
       return this.log[0]
@@ -38,12 +38,12 @@ export default class Check {
     }
   }
 
-  constructor(public target: number, method?: Check['method']) {
-    if(method) { this.method = method };
+  constructor(public target: number, rollMethod?: Check['rollMethod']) {
+    if(rollMethod) { this.rollMethod = rollMethod };
 
     this.log.push(rollDice(1, 100));
 
-    if(this.method === 'advantage' || this.method === 'disadvantage') {
+    if(this.rollMethod === 'advantage' || this.rollMethod === 'disadvantage') {
       this.log.push(rollDice(1, 100))
     }
   }
