@@ -237,42 +237,34 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { charStore, skillStore } from '~/store'
+import { Context } from '@nuxt/types'
+import { skillStore } from '~/store'
 import { Character } from '~/model/character'
 import StatBlock from '~/model/stat-block'
 import Check from '~/model/check'
-import { parseCookies } from '~/store/char-store'
 
-@Component({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      if (charStore.activeCharacter === null) {
-        const cookie = parseCookies(document.cookie)
-        if (
-          cookie.activeCharacter &&
-          charStore.character(cookie.activeCharacter)
-        ) {
-          // Build Character from Cookies
-        } else {
-          vm.$router.push('/')
-        }
-      } else if (charStore.activeCharacter.name !== to.params.character) {
-        vm.$router.push('/')
-      }
-    })
-  },
-})
+@Component
 export default class CharacterPage extends Vue {
-  get character() {
-    if (charStore.activeCharacter) {
-      return new Character(charStore.activeCharacter)
+  async asyncData({ $axios, route }: Context) {
+    const characterBank = await $axios
+      .get('/.netlify/functions/get-characters')
+      .then((response: any) => {
+        return response.data.data.map((character: any) => {
+          return character.data
+        })
+      })
+
+    const character = characterBank.find(
+      (character: any) => character.name === route.params.character
+    )
+    if (character) {
+      return {
+        character: new Character(character),
+      }
     }
   }
 
-  get test() {
-    return parseCookies(document.cookie)
-  }
+  public character: Character | null = null
 
   changeHP(amount: number) {
     this.character!.changeHP(amount)

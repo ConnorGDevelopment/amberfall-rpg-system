@@ -176,22 +176,6 @@ const sparrow: ICharacter = {
   skills: []
 } */
 
-function setCharacterCookie(activeCharacter: ICharacter) {
-  const cookieFields: Array<keyof ICharacter> = ['currentHP', 'triumph', 'ruin']
-  cookieFields.forEach(field => {
-    document.cookie = `${activeCharacter.name}_${field}=${activeCharacter![field]}; samesite=Strict; expires=2023-12-31T07:00:00.000Z;`
-  })
-}
-
-export function parseCookies(cookieString: string) {
-  return cookieString.split(';')
-  .map(v => v.split('='))
-  .reduce((acc: any, v: any) => {
-    acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
-    return acc;
-  }, {});
-}
-
 @Module({
   name: 'char-store',
   stateFactory: true,
@@ -218,8 +202,6 @@ export default class CharStore extends VuexModule {
   @Mutation
   selectCharacter(character: ICharacter) {
     this.activeCharacter = character
-    setCharacterCookie(this.activeCharacter)
-    document.cookie = `activeCharacter=${this.activeCharacter.name}; samesite=Strict; expires=2023-12-31T07:00:00.000Z;`
   }
 
   @Mutation

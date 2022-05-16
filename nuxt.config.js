@@ -46,7 +46,9 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:8888',
+  },
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
   content: {},
@@ -68,12 +70,6 @@ export default {
           success: colors.green.accent3,
         },
       },
-    },
-  },
-
-  watchers: {
-    webpack: {
-      ignored: /node_modules/,
     },
   },
 
