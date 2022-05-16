@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12">
-      <v-card>
+      <v-card v-if="character">
         <v-card-title>
           <v-row no-gutters>
             <!-- Avatar -->
@@ -31,34 +31,20 @@
                   Tokens
                 </v-card-subtitle>
                 <v-card-title class="text-center py-0">
-                  <v-btn
-                    small
-                    icon
-                    :disabled="character.triumph === 0"
-                    @click="character.triumph--"
-                  >
-                    <v-icon color="white"> mdi-minus-box </v-icon>
-                  </v-btn>
-                  <v-icon> mdi-trophy </v-icon> :
-                  {{ character.triumph }}
-                  <v-btn small icon @click="character.triumph++">
-                    <v-icon color="white"> mdi-plus-box </v-icon>
-                  </v-btn>
+                  <Incrementer
+                    :value="character.triumph"
+                    :icon="'mdi-trophy'"
+                    @increment="changeToken('triumph', +1)"
+                    @decrement="changeToken('triumph', -1)"
+                  />
                 </v-card-title>
                 <v-card-title class="text-center pt-0">
-                  <v-btn
-                    small
-                    icon
-                    :disabled="character.ruin === 0"
-                    @click="character.ruin--"
-                  >
-                    <v-icon color="white"> mdi-minus-box </v-icon>
-                  </v-btn>
-                  <v-icon> mdi-trophy-broken </v-icon> :
-                  {{ character.ruin }}
-                  <v-btn small icon @click="character.ruin++">
-                    <v-icon color="white"> mdi-plus-box </v-icon>
-                  </v-btn>
+                  <Incrementer
+                    :value="character.ruin"
+                    :icon="'mdi-trophy-broken'"
+                    @increment="changeToken('ruin', +1)"
+                    @decrement="changeToken('ruin', -1)"
+                  />
                 </v-card-title>
               </v-card>
             </v-col>
@@ -72,6 +58,7 @@
                 </v-card-title>
                 <v-card-text class="pt-0">
                   <v-text-field
+                    :key="character.currentHP"
                     v-model="inputHP"
                     type="number"
                     hide-spin-buttons
@@ -83,15 +70,9 @@
                     dark
                     prepend-icon="mdi-minus-box"
                     append-outer-icon="mdi-plus-box"
-                    @click:prepend="
-                      inputHP
-                        ? character.changeHP(-inputHP)
-                        : character.changeHP(-1)
-                    "
+                    @click:prepend="inputHP ? changeHP(-inputHP) : changeHP(-1)"
                     @click:append-outer="
-                      inputHP
-                        ? character.changeHP(+inputHP)
-                        : character.changeHP(1)
+                      inputHP ? changeHP(+inputHP) : changeHP(1)
                     "
                     @focus="inputHP = null"
                   />
@@ -117,35 +98,29 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(stat, name) in character.stats" :key="name">
+                    <tr
+                      v-for="(stat, statName) in character.stats"
+                      :key="statName"
+                    >
                       <td class="text-capitalize no-select">
-                        <v-chip
-                          label
-                          :color="
-                            statChips.find((chip) => chip.stat === name).color
-                          "
-                          disabled
-                          class="opacity-fix"
-                        >
-                          {{ name }}
-                        </v-chip>
+                        <StatChip :stat-name="statName" />
                       </td>
                       <td>
                         <DiceButton
                           :color="'white'"
                           :hover-color="'black'"
                           :stat="stat"
-                          @callRoll="roll(name, false, $event)"
-                          @callMenu="openMenu(name, false, $event)"
+                          @callRoll="roll(statName, false, $event)"
+                          @callMenu="openMenu(statName, false, $event)"
                         />
                       </td>
                       <td>
                         <DiceButton
                           :color="'secondary'"
                           :hover-color="'white'"
-                          :stat="character.halfStat(name)"
-                          @callRoll="roll(name, true, $event)"
-                          @callMenu="openMenu(name, true, $event)"
+                          :stat="character.halfStat(statName)"
+                          @callRoll="roll(statName, true, $event)"
+                          @callMenu="openMenu(statName, true, $event)"
                         />
                       </td>
                       <td class="no-select">
@@ -164,21 +139,15 @@
               <v-card-title>
                 <span class="pr-2"> Skills </span>
                 <v-spacer />
-                <v-chip
-                  v-for="chip in statChips"
-                  :key="chip.stat"
-                  :class="chip.color"
-                  class="text-capitalize mx-2"
-                  :outlined="skillSearch !== chip.stat"
-                  label
-                  @click="
-                    skillSearch !== chip.stat
-                      ? (skillSearch = chip.stat)
-                      : (skillSearch = '')
-                  "
-                >
-                  {{ chip.stat }}
-                </v-chip>
+                <v-chip-group v-model="skillSearch">
+                  <StatChip
+                    v-for="(stat, statName) in character.stats"
+                    :key="statName"
+                    :stat-name="statName"
+                    :outlined="skillSearch !== statName"
+                    :is-disabled="false"
+                  />
+                </v-chip-group>
                 <v-text-field
                   v-model="skillSearch"
                   append-icon="mdi-magnify"
@@ -223,17 +192,8 @@
                     />
                   </v-row>
                 </template>
-                <template #[`item.stat`]="{ item }">
-                  <v-chip
-                    label
-                    :class="
-                      statChips.find((chip) => chip.stat === item.stat).color
-                    "
-                    disabled
-                    class="opacity-fix"
-                  >
-                    {{ item.stat }}
-                  </v-chip>
+                <template #[`item.statName`]="{ item }">
+                  <StatChip :stat-name="item.statName" />
                 </template>
                 <template #[`item.advanced`]="{ item }">
                   <v-chip
@@ -281,19 +241,46 @@ import { charStore, skillStore } from '~/store'
 import { Character } from '~/model/character'
 import StatBlock from '~/model/stat-block'
 import Check from '~/model/check'
+import { parseCookies } from '~/store/char-store'
 
-@Component
+@Component({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (charStore.activeCharacter === null) {
+        const cookie = parseCookies(document.cookie)
+        if (
+          cookie.activeCharacter &&
+          charStore.character(cookie.activeCharacter)
+        ) {
+          // Build Character from Cookies
+        } else {
+          vm.$router.push('/')
+        }
+      } else if (charStore.activeCharacter.name !== to.params.character) {
+        vm.$router.push('/')
+      }
+    })
+  },
+})
 export default class CharacterPage extends Vue {
-  genCharacter() {
-    const characterData = charStore.character(this.$route.params.character)
-    if (characterData) {
-      return new Character(characterData)
-    } else {
-      return this.$nuxt.error({ statusCode: 404 })
+  get character() {
+    if (charStore.activeCharacter) {
+      return new Character(charStore.activeCharacter)
     }
   }
 
-  public character = this.genCharacter()
+  get test() {
+    return parseCookies(document.cookie)
+  }
+
+  changeHP(amount: number) {
+    this.character!.changeHP(amount)
+  }
+
+  changeToken(tokenName: 'triumph' | 'ruin', amount: number) {
+    this.character!.changeToken(tokenName, amount)
+  }
 
   public inputHP = null
 
@@ -309,7 +296,7 @@ export default class CharacterPage extends Vue {
     {
       text: 'Stat',
       sortable: true,
-      value: 'stat',
+      value: 'statName',
     },
     {
       text: 'Type',
@@ -325,33 +312,6 @@ export default class CharacterPage extends Vue {
   ]
 
   public skillSearch = ''
-
-  public statChips = [
-    {
-      stat: 'strength',
-      color: 'orange lighten-1',
-    },
-    {
-      stat: 'dexterity',
-      color: 'green lighten-1',
-    },
-    {
-      stat: 'fortitude',
-      color: 'brown lighten-1',
-    },
-    {
-      stat: 'intelligence',
-      color: 'light-blue lighten-1',
-    },
-    {
-      stat: 'wisdom',
-      color: 'deep-purple lighten-1',
-    },
-    {
-      stat: 'charisma',
-      color: 'pink lighten-1',
-    },
-  ]
 
   public menu = {
     show: false,
@@ -373,54 +333,35 @@ export default class CharacterPage extends Vue {
     })
   }
 
-  roll(statName: keyof StatBlock, isHalf: boolean, event: any) {
+  openDrawer(statName: keyof StatBlock, isHalf: boolean, event: any) {
     if (this.character) {
       this.drawer = {
         show: true,
-        check: this.character.statCheck(statName, isHalf, event),
-        clicked: false,
+        statName,
+        isHalf,
+        method: event,
       }
     }
   }
 
   public drawer: {
     show: boolean
-    check: null | Check
-    clicked: boolean
+    statName: keyof StatBlock
+    isHalf: boolean
+    method: Check['rollMethod']
   } = {
     show: false,
-    check: null,
-    clicked: false,
+    statName: 'strength',
+    isHalf: false,
+    method: 'flat',
   }
 
   closeDrawer() {
     this.drawer = {
       show: false,
-      check: null,
-      clicked: false,
-    }
-  }
-
-  changeToken(event: {
-    tokenName: 'triumph' | 'ruin'
-    operation: 'add' | 'subtract'
-  }) {
-    if (event.tokenName === 'triumph' && this.character) {
-      if (event.operation === 'add') {
-        this.character.triumph++
-        this.drawer.clicked = true
-      } else if (event.operation === 'subtract') {
-        this.character.triumph--
-        this.drawer.clicked = false
-      }
-    } else if (event.tokenName === 'ruin' && this.character) {
-      if (event.operation === 'add') {
-        this.character.ruin++
-        this.drawer.clicked = true
-      } else if (event.operation) {
-        this.character.ruin--
-        this.drawer.clicked = false
-      }
+      statName: 'strength',
+      isHalf: false,
+      method: 'flat',
     }
   }
 }

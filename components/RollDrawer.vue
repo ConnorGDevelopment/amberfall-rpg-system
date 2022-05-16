@@ -6,11 +6,53 @@
     class="transparent elevation-0"
     floating
     bottom
+    width="312"
   >
-    <v-row no-gutters align="end" style="height: 100%; width: 100%">
+    <v-row no-gutters align="start" style="height: 100%; width: 100%">
       <v-col cols="12">
+        <v-card color="white" class="elevation-4">
+          <v-card-title class="black--text justify-center">
+            Challenge Modifier
+          </v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col cols="4" align-self="center">
+                <v-btn
+                  v-for="value in [-10, -20, -30]"
+                  :key="value"
+                  color="black"
+                  class="white--text my-2"
+                  block
+                >
+                  {{ value }}
+                </v-btn>
+              </v-col>
+              <v-col cols="4" align-self="center">
+                <v-btn
+                  color="black"
+                  class="white--text my-2"
+                  style="text-transform: none"
+                  block
+                >
+                  0
+                </v-btn>
+              </v-col>
+              <v-col cols="4" align-self="center">
+                <v-btn
+                  v-for="value in [10, 20, 30]"
+                  :key="value"
+                  color="black"
+                  class="white--text my-2"
+                  block
+                >
+                  +{{ value }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
         <v-card
-          v-if="drawer.check"
+          v-if="drawer.check && drawer.challengeClicked"
           :key="drawer.check.value"
           color="white"
           class="elevation-4"
@@ -41,14 +83,16 @@
               v-if="drawer.check.triumph"
               class="fade-in-text"
               color="black"
-              :style="drawer.clicked ? 'border-color: black !important;' : ''"
-              :disabled="drawer.clicked"
-              :outlined="drawer.clicked"
+              :style="
+                drawer.tokenClicked ? 'border-color: black !important;' : ''
+              "
+              :disabled="drawer.tokenClicked"
+              :outlined="drawer.tokenClicked"
               @click="callToken('triumph', 'add')"
             >
               <v-icon
                 :style="
-                  drawer.clicked
+                  drawer.tokenClicked
                     ? 'color: black !important;'
                     : ' color: white !important'
                 "
@@ -57,7 +101,7 @@
               </v-icon>
               <v-icon
                 :style="
-                  drawer.clicked
+                  drawer.tokenClicked
                     ? 'color: black !important;'
                     : ' color: white !important'
                 "
@@ -67,7 +111,7 @@
             </v-btn>
 
             <v-btn
-              v-if="drawer.clicked && drawer.check.triumph"
+              v-if="drawer.tokenClicked && drawer.check.triumph"
               color="black"
               min-width="0"
               width="2rem"
@@ -81,14 +125,16 @@
               v-if="drawer.check.ruin"
               class="fade-in-text"
               color="black"
-              :style="drawer.clicked ? 'border-color: black !important;' : ''"
-              :disabled="drawer.clicked"
-              :outlined="drawer.clicked"
+              :style="
+                drawer.tokenClicked ? 'border-color: black !important;' : ''
+              "
+              :disabled="drawer.tokenClicked"
+              :outlined="drawer.tokenClicked"
               @click="callToken('ruin', 'add')"
             >
               <v-icon
                 :style="
-                  drawer.clicked
+                  drawer.tokenClicked
                     ? 'color: black !important;'
                     : ' color: white !important'
                 "
@@ -97,7 +143,7 @@
               </v-icon>
               <v-icon
                 :style="
-                  drawer.clicked
+                  drawer.tokenClicked
                     ? 'color: black !important;'
                     : ' color: white !important'
                 "
@@ -107,7 +153,7 @@
             </v-btn>
 
             <v-btn
-              v-if="drawer.clicked && drawer.check.ruin"
+              v-if="drawer.tokenClicked && drawer.check.ruin"
               color="black"
               min-width="0"
               width="2rem"
@@ -125,32 +171,17 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
-import Check from '~/model/check'
+import StatBlock from '~/model/stat-block'
 
 @Component
 export default class RollDrawer extends Vue {
   @Prop({ required: true }) drawer!: {
     show: boolean
-    check: Check
-    clicked: boolean
+    statName: keyof StatBlock
   }
 
   public misses: number = 15
   public speed: number = 60
-
-  get resultText(): string {
-    if (this.drawer.check.success && this.drawer.check.triumph) {
-      return 'Triumphant Success!'
-    } else if (this.drawer.check.success && !this.drawer.check.triumph) {
-      return 'Success!'
-    } else if (!this.drawer.check.success && !this.drawer.check.ruin) {
-      return 'Failure!'
-    } else if (!this.drawer.check.success && this.drawer.check.ruin) {
-      return 'Ruinous Failure!'
-    } else {
-      return 'Error'
-    }
-  }
 
   callToken(
     tokenName: 'triumph' | 'ruin',
@@ -158,60 +189,7 @@ export default class RollDrawer extends Vue {
   ): void {
     this.$emit('callToken', { tokenName, operation })
   }
+
+  roll() {}
 }
 </script>
-
-<style scoped>
-.fade-in-text {
-  animation: fadeIn linear 2s;
-  -webkit-animation: fadeIn linear 2s;
-  -moz-animation: fadeIn linear 2s;
-  -o-animation: fadeIn linear 2s;
-  -ms-animation: fadeIn linear 2s;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@-moz-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@-o-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@-ms-keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-</style>

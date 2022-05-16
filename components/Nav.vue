@@ -47,7 +47,7 @@ import { charStore } from '~/store'
 @Component
 export default class Nav extends Vue {
   get characters() {
-    return charStore.characters
+    return charStore.characterBank
   }
 
   public mini = true

@@ -2,6 +2,6 @@ import StatBlock from "~/model/stat-block";
 
 export default interface Skill {
   name: string,
-  stat: keyof StatBlock,
+  statName: keyof StatBlock,
   advanced: boolean
 }

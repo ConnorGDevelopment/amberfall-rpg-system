@@ -75,12 +75,12 @@ function skillGen(skillGroup: {
 }, advanced: boolean): Skill[] {
   const skills: Skill[] = []
   Object.keys(skillGroup).forEach(key => {
-    const keyCast = key as Skill['stat']
+    const keyCast = key as Skill['statName']
 
     skillGroup[keyCast].forEach(skill => {
       skills.push({
         name: skill,
-        stat: keyCast,
+        statName: keyCast,
         advanced
       })
     })

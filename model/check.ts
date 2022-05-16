@@ -6,11 +6,11 @@ export default class Check {
 
   get value(): number {
     if(this.rollMethod === 'advantage') {
-      return Math.min(...this.log)
+      return Math.min(...this.log) + this.challengeMod
     } else if(this.rollMethod === 'disadvantage') {
-      return Math.max(...this.log)
+      return Math.max(...this.log) + this.challengeMod
     } else {
-      return this.log[0]
+      return this.log[0] + this.challengeMod
     }
   }
 
@@ -38,7 +38,19 @@ export default class Check {
     }
   }
 
-  constructor(public target: number, rollMethod?: Check['rollMethod']) {
+  get resultText(): string | undefined {
+    if(this.success && this.triumph) {
+      return 'Triumphant Success!'
+    } else if(this.success && !this.triumph) {
+      return 'Success!'
+    } else if(!this.success && !this.ruin) {
+      return 'Failure!'
+    } else if(!this.success && this.ruin) {
+      return 'Ruinous Failure!'
+    }
+  }
+
+  constructor(public target: number, public challengeMod: number, rollMethod?: Check['rollMethod']) {
     if(rollMethod) { this.rollMethod = rollMethod };
 
     this.log.push(rollDice(1, 100));

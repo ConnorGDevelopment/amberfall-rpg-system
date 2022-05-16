@@ -59,6 +59,11 @@ export class Character implements ICharacter {
     this.ruin = params.ruin;
   }
 
+  // For Vuex
+  toJSON(): ICharacter {
+    return {...this}
+  }
+
   // Stats
   get stats(): StatBlock {
     function calcStat(character: Character, statName: keyof StatBlock): number {
@@ -108,7 +113,15 @@ export class Character implements ICharacter {
     }
   }
 
-  statCheck(statName: keyof StatBlock, isHalf?: boolean, method?: Check['rollMethod']): Check {
-    return new Check(isHalf ?  this.halfStat(statName) : this.stats[statName], method);
+  changeToken(tokenName: 'triumph' | 'ruin', amount: number): void {
+    if(tokenName === 'triumph') {
+      this.triumph = this.triumph + amount
+    } else if(tokenName === 'ruin') {
+      this.ruin = this.ruin + amount
+    }
+  }
+
+  statCheck(statName: keyof StatBlock, challengeMod?: number, isHalf?: boolean, method?: Check['rollMethod']): Check {
+    return new Check(isHalf ?  this.halfStat(statName) : this.stats[statName], challengeMod || 0, method);
   }
 }

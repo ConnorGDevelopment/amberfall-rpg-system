@@ -1,5 +1,5 @@
-import { Module, VuexModule } from 'vuex-module-decorators'
-import { ICharacter } from '~/model/character'
+import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import { Character, ICharacter } from '~/model/character'
 
 
 const ambrose: ICharacter = {
@@ -48,22 +48,18 @@ const ambrose: ICharacter = {
   ruin: 0
 }
 
-/* const baxter: ICharacter = {
+const baxter: ICharacter = {
   name: 'Baxter',
   surname: 'Davenport',
   baseStats: {
-    strength: 20,
-    dexterity: 20,
-    fortitude: 20,
-    intelligence: 55,
-    wisdom: 50,
-    charisma: 40
+    strength: 30,
+    dexterity: 30,
+    fortitude: 30,
+    intelligence: 30,
+    wisdom: 30,
+    charisma: 30
   },
-  race: 'Human',
-  job: {
-    name: 'Mutant',
-    bonusHP: 4
-  },
+
   advances: {
     strength: 0,
     dexterity: 0,
@@ -71,11 +67,33 @@ const ambrose: ICharacter = {
     intelligence: 0,
     wisdom: 0,
     charisma: 0,
-    other: 0
   },
-  skills: []
+
+  otherAdvances: 6,
+
+  race: 'Human',
+
+  job: {
+    name: 'Mutant',
+    bonusHP: 6,
+    advanceBlock: {
+      strength: 0,
+      dexterity: 0,
+      fortitude: 0,
+      intelligence: 0,
+      wisdom: 0,
+      charisma: 0
+    },
+    skills: ['Athletics']
+  },
+
+  currentHP: 48,
+
+  triumph: 0,
+  ruin: 0
 }
 
+/*
 const maya: ICharacter = {
   name: 'Maya',
   baseStats: {
@@ -158,23 +176,57 @@ const sparrow: ICharacter = {
   skills: []
 } */
 
+function setCharacterCookie(activeCharacter: ICharacter) {
+  const cookieFields: Array<keyof ICharacter> = ['currentHP', 'triumph', 'ruin']
+  cookieFields.forEach(field => {
+    document.cookie = `${activeCharacter.name}_${field}=${activeCharacter![field]}; samesite=Strict; expires=2023-12-31T07:00:00.000Z;`
+  })
+}
+
+export function parseCookies(cookieString: string) {
+  return cookieString.split(';')
+  .map(v => v.split('='))
+  .reduce((acc: any, v: any) => {
+    acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+    return acc;
+  }, {});
+}
+
 @Module({
   name: 'char-store',
   stateFactory: true,
   namespaced: true,
 })
 export default class CharStore extends VuexModule {
-  characters: ICharacter[] = [
+  characterBank: ICharacter[] = [
     ambrose,
+    baxter
     /* baxter,
     maya,
     melia,
     sparrow */
   ]
 
+  activeCharacter: ICharacter | null = null
+
   get character() {
-    return (characterName: string) => this.characters.find(
+    return (characterName: string) => this.characterBank.find(
       character => character.name === characterName
     )
+  }
+
+  @Mutation
+  selectCharacter(character: ICharacter) {
+    this.activeCharacter = character
+    setCharacterCookie(this.activeCharacter)
+    document.cookie = `activeCharacter=${this.activeCharacter.name}; samesite=Strict; expires=2023-12-31T07:00:00.000Z;`
+  }
+
+  @Mutation
+  updateCharacter(character: Character) {
+    const characterIndex = this.characterBank.findIndex((bankCharacter: ICharacter) => bankCharacter.name === character.name)
+    if(characterIndex > -1) {
+      this.characterBank[characterIndex] = character.toJSON()
+    }
   }
 }
