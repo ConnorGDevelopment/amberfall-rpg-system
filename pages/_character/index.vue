@@ -237,34 +237,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { Context } from '@nuxt/types'
-import { skills } from '~/store'
 import { Character } from '~/model/character'
 import StatBlock from '~/model/stat-block'
 import Check from '~/model/check'
 
 @Component
 export default class CharacterPage extends Vue {
-  async asyncData({ $axios, route }: Context) {
-    const characterBank = await $axios
-      .get('/.netlify/functions/get-characters')
-      .then((response: any) => {
-        return response.data.data.map((character: any) => {
-          return character.data
-        })
-      })
-
-    const character = characterBank.find(
-      (character: any) => character.name === route.params.character
+  get character() {
+    return new Character(
+      this.$store.state.characters.find(
+        (character: any) => character.name === this.$route.params.character
+      )
     )
-    if (character) {
-      return {
-        character: new Character(character),
-      }
-    }
   }
-
-  public character: Character | null = null
 
   changeHP(amount: number) {
     this.character!.changeHP(amount)
@@ -276,7 +261,7 @@ export default class CharacterPage extends Vue {
 
   public inputHP = null
 
-  public skills = skills.skills
+  public skills = this.$store.state.skills
 
   public skillHeaders = [
     {

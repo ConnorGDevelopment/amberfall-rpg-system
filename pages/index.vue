@@ -1,10 +1,7 @@
 <template>
   <v-sheet>
     <v-slide-group>
-      <v-slide-item
-        v-for="character in characterBank"
-        :key="character.data.name"
-      >
+      <v-slide-item v-for="character in characters" :key="character.data.name">
         <v-hover v-slot="{ hover }">
           <v-card
             :color="hover ? 'secondary' : 'grey darken-3'"
@@ -21,7 +18,7 @@
               {{ character.data.name }} {{ character.data.surname }}
             </v-card-title>
             <v-card-subtitle class="justify-center text-center">
-              {{ character.data.race }} - {{ character.data.job.name }}
+              {{ character.data.race }} - {{ character.data.job.data.name }}
             </v-card-subtitle>
           </v-card>
         </v-hover>
@@ -31,22 +28,12 @@
 </template>
 
 <script lang="ts">
-import { Context } from '@nuxt/types'
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class IndexPage extends Vue {
-  async asyncData({ $axios }: Context) {
-    const { ...characterBank } = await $axios
-      .get('/.netlify/functions/get-characters')
-      .then((response) => {
-        return response.data.data
-      })
-    if (characterBank) {
-      return {
-        characterBank,
-      }
-    }
+  get characters() {
+    return this.$store.getters.characters
   }
 }
 </script>

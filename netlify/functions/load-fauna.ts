@@ -14,9 +14,17 @@ const handler: Handler = async () => {
         q.Paginate(q.Documents(q.Collection('characters'))),
         q.Lambda(x => q.Get(x))
       ))
+      const jobs = await client.query(q.Map(
+        q.Paginate(q.Documents(q.Collection('jobs'))),
+        q.Lambda(x => q.Get(x))
+      ))
+      const skills = await client.query(q.Map(
+        q.Paginate(q.Documents(q.Collection('skills'))),
+        q.Lambda(x => q.Get(x))
+      ))
       return {
         statusCode: 200,
-        body: JSON.stringify(characters)
+        body: JSON.stringify({characters, jobs, skills})
       }
     } catch(e) {
       return {
