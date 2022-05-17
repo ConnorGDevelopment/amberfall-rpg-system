@@ -177,7 +177,7 @@ const sparrow: ICharacter = {
 } */
 
 @Module({
-  name: 'chars',
+  name: 'modules/chars',
   stateFactory: true,
   namespaced: true,
 })

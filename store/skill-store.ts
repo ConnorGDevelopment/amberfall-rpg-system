@@ -91,7 +91,7 @@ function skillGen(skillGroup: {
 
 
 @Module({
-  name: 'skills',
+  name: 'modules/skills',
   stateFactory: true,
   namespaced: true,
 })
