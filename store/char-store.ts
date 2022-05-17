@@ -177,11 +177,11 @@ const sparrow: ICharacter = {
 } */
 
 @Module({
-  name: 'char-store',
+  name: 'chars',
   stateFactory: true,
   namespaced: true,
 })
-export default class CharStore extends VuexModule {
+export default class Chars extends VuexModule {
   characterBank: ICharacter[] = [
     ambrose,
     baxter

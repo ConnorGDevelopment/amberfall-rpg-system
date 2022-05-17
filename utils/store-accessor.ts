@@ -5,12 +5,12 @@ import { getModule } from 'vuex-module-decorators'
 import CharStore from '~/store/char-store'
 import SkillStore from '~/store/skill-store';
 
-let charStore: CharStore;
-let skillStore: SkillStore
+let chars: CharStore;
+let skills: SkillStore
 
 function initialiseStores(store: Store<any>): void {
-  charStore = getModule(CharStore, store)
-  skillStore = getModule(SkillStore, store)
+  chars = getModule(CharStore, store)
+  skills = getModule(SkillStore, store)
 }
 
-export {initialiseStores, charStore, skillStore}
+export {initialiseStores, chars, skills}

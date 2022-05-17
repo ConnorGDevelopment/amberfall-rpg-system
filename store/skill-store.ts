@@ -91,10 +91,10 @@ function skillGen(skillGroup: {
 
 
 @Module({
-  name: 'skill-store',
+  name: 'skills',
   stateFactory: true,
   namespaced: true,
 })
-export default class SkillStore extends VuexModule {
+export default class Skills extends VuexModule {
   skills: Skill[] = [...skillGen(skillMap.basic, false), ...skillGen(skillMap.advanced, true)]
 }
