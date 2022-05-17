@@ -42,12 +42,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { charStore } from '~/store'
+import { chars } from '~/store'
 
 @Component
 export default class Nav extends Vue {
   get characters() {
-    return charStore.characterBank
+    return chars.characterBank
   }
 
   public mini = true
