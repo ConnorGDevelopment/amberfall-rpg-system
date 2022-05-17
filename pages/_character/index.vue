@@ -238,7 +238,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types'
-import { skillStore } from '~/store'
+import { skills } from '~/store'
 import { Character } from '~/model/character'
 import StatBlock from '~/model/stat-block'
 import Check from '~/model/check'
@@ -276,7 +276,7 @@ export default class CharacterPage extends Vue {
 
   public inputHP = null
 
-  public skills = skillStore.skills
+  public skills = skills.skills
 
   public skillHeaders = [
     {
