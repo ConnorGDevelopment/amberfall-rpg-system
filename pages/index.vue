@@ -18,7 +18,7 @@
               {{ character.data.name }} {{ character.data.surname }}
             </v-card-title>
             <v-card-subtitle class="justify-center text-center">
-              {{ character.data.race }} - {{ character.data.job.data.name }}
+              {{ character.data.race }} - {{ character.data.job.name }}
             </v-card-subtitle>
           </v-card>
         </v-hover>
@@ -29,10 +29,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { ICharacter } from '~/model/character'
+import { IFauna } from '~/model/fauna'
 
 @Component
 export default class IndexPage extends Vue {
-  get characters() {
+  get characters(): IFauna<ICharacter> {
     return this.$store.getters.characters
   }
 }

@@ -1,98 +1,13 @@
 import { GetterTree, ActionTree, MutationTree } from 'vuex/types'
+import { ICharacter } from '~/model/character'
+import { IFauna } from '~/model/fauna'
+import Job from '~/model/job'
 import Skill from '~/model/skill'
 
-const skillMap = {
-  basic: {
-    strength: [
-      'Athletics',
-      'Intimidate'
-    ],
-    dexterity: [
-      'Acrobatics',
-      'Sleight of Hand',
-      'Stealth'
-    ],
-    fortitude: [],
-    intelligence: [
-      'History',
-      'Inspect',
-      'Nature',
-      'Religion',
-      'Search'
-    ],
-    wisdom: [
-      'Animal Handling',
-      'Focus',
-      'Insight',
-      'Perception',
-      'Survival'
-    ],
-    charisma: [
-      'Command',
-      'Deception',
-      'Gossip',
-      'Haggle',
-      'Persuasion'
-    ]
-  },
-  advanced: {
-    strength: [],
-    dexterity: [
-      'Pick Lock',
-      'Shadowing'
-    ],
-    fortitude: [],
-    intelligence: [
-      'Arcana',
-      'Disguise',
-      'Investigation',
-      'Lip Reading',
-      'Occult',
-      'Psionics'
-    ],
-    wisdom: [
-      'Medicine',
-      'Public Speaking',
-      'Sixth Sense'
-    ],
-    charisma: [
-      'Blather',
-      'Etiquette',
-      'Guile',
-      'Networking',
-      'Performance'
-    ]
-  }
-}
-
-function skillGen(skillGroup: {
-  strength: string[],
-  dexterity: string[],
-  fortitude: string[],
-  intelligence: string[],
-  wisdom: string[],
-  charisma: string[]
-}, advanced: boolean): Skill[] {
-  const skills: Skill[] = []
-  Object.keys(skillGroup).forEach(key => {
-    const keyCast = key as Skill['statName']
-
-    skillGroup[keyCast].forEach(skill => {
-      skills.push({
-        name: skill,
-        statName: keyCast,
-        advanced
-      })
-    })
-  })
-  return skills
-}
-
-
 export const state = () => ({
-  characters: [],
-  jobs: [],
-  skills: [...skillGen(skillMap.basic, false), ...skillGen(skillMap.advanced, true)]
+  characters: [] as IFauna<ICharacter>[],
+  jobs: [] as IFauna<Job>[],
+  skills: [] as IFauna<Skill>[],
 })
 
 export type RootState = ReturnType<typeof state>
@@ -105,9 +20,13 @@ export const mutations: MutationTree<RootState> = {
 
   loadFauna: (state, payload) => {
     state.jobs = payload.jobs.data
+    state.skills = payload.skills.data
 
     state.characters = payload.characters.data.map((character: any) => {
-      character.data.job = payload.jobs.data.find((job: any) => job.ref['@ref'].id === character.data.job['@ref'].id)
+      character.data.job = payload.jobs.data.find((job: any) => job.data.name === character.data.job).data
+      character.data.job.skills = character.data.job.skills.map((skillName: any) => {
+        return payload.skills.data.find((skill: any) => skill.data.name === skillName).data
+      })
       return character
     })
   }
