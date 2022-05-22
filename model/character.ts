@@ -1,4 +1,5 @@
 import Check from "./check";
+import { IFauna } from "./fauna";
 import Job from "~/model/job";
 import StatBlock from "~/model/stat-block";
 import Skill from "~/model/skill";
@@ -21,6 +22,8 @@ export interface ICharacter {
 }
 
 export class Character implements ICharacter {
+  id: string;
+
   name: string;
   surname: string;
 
@@ -39,53 +42,67 @@ export class Character implements ICharacter {
   triumph: number;
   ruin: number;
 
-  constructor(params: ICharacter) {
-    this.name = params.name;
-    this.surname = params.surname;
+  constructor(params: IFauna<ICharacter>) {
+    this.id = params.ref["@ref"].id
 
-    this.baseStats = params.baseStats;
-
-    this.advances = params.advances;
-
-    this.otherAdvances = params.otherAdvances;
-
-    this.race = params.race;
-
-    this.job = params.job;
-
-    this.currentHP = params.currentHP;
-
-    this.triumph = params.triumph;
-    this.ruin = params.ruin;
+    this.name = params.data.name
+    this.surname = params.data.surname
+    this.baseStats = params.data.baseStats
+    this.advances = params.data.advances
+    this.otherAdvances = params.data.otherAdvances
+    this.race = params.data.race
+    this.job = params.data.job
+    this.currentHP = params.data.currentHP
+    this.triumph = params.data.triumph
+    this.ruin = params.data.ruin
   }
 
   // For Vuex
-  toJSON(): ICharacter {
-    return {...this}
+  toJSON(excludeID?: boolean): ICharacter {
+    const data = {...this}
+    if(excludeID) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const {id, ...dataProcessed} = data
+      return dataProcessed
+    } else {
+      return data
+    }
   }
 
   // Stats
-  get stats(): StatBlock {
-    function calcStat(character: Character, statName: keyof StatBlock): number {
-      return character.baseStats[statName] + character.advances[statName] * 5
+  calcStat(character: Character, statName: keyof StatBlock, special?: 'half' | 'challenge'): number {
+    const stat = character.baseStats[statName] + character.advances[statName] * 5
+    switch (special) {
+      case 'half':
+        return Math.floor(stat / 2)
+      case 'challenge':
+        return stat - 50
+      default:
+        return stat
     }
+  }
 
+  genStats(special?: 'half' | 'challenge'): StatBlock {
     return {
-      strength: calcStat(this, 'strength'),
-      dexterity: calcStat(this, 'dexterity'),
-      fortitude: calcStat(this, 'fortitude'),
-      intelligence: calcStat(this, 'intelligence'),
-      wisdom: calcStat(this, 'wisdom'),
-      charisma: calcStat(this, 'charisma')
+      strength: this.calcStat(this, 'strength', special),
+      dexterity: this.calcStat(this, 'dexterity', special),
+      fortitude: this.calcStat(this, 'fortitude', special),
+      intelligence: this.calcStat(this, 'intelligence', special),
+      wisdom: this.calcStat(this, 'wisdom', special),
+      charisma: this.calcStat(this, 'charisma', special)
     }
   }
 
-  halfStat(statName: keyof StatBlock): number {
-    return Math.floor(this.stats[statName] / 2)
+  get stats(): StatBlock {
+    return this.genStats();
   }
 
-  challengeModifier(statName: keyof StatBlock): number {
-    return this.stats[statName] - 50
+  get statsHalf(): StatBlock {
+    return this.genStats('half')
+  }
+
+  get statsChallenge(): StatBlock {
+    return this.genStats('challenge')
   }
 
   get level(): number {
@@ -99,29 +116,27 @@ export class Character implements ICharacter {
 
   // HP
   get maxHP(): number {
-    const hpFortitudeBonus = Math.floor(Math.abs(this.challengeModifier('fortitude') / 10))
+    const hpFortitudeBonus = Math.floor(Math.abs(this.statsChallenge.fortitude / 10))
     return (hpFortitudeBonus + this.job.bonusHP) * this.level
   }
 
-  changeHP(amount: number): void {
+  calcHP(amount: number): number {
+    let newHP = this.currentHP
     if(this.currentHP + amount >= this.maxHP) {
-      this.currentHP = this.maxHP;
+      newHP = this.maxHP;
     } else if(this.currentHP + amount < this.maxHP && this.currentHP + amount >= 0) {
-      this.currentHP = this.currentHP + amount;
+      newHP = newHP + amount
     } else if(this.currentHP + amount < 0) {
-      this.currentHP = 0
+      newHP = 0
     }
+    return newHP;
   }
 
-  changeToken(tokenName: 'triumph' | 'ruin', amount: number): void {
-    if(tokenName === 'triumph') {
-      this.triumph = this.triumph + amount
-    } else if(tokenName === 'ruin') {
-      this.ruin = this.ruin + amount
-    }
+  calcToken(tokenName: 'triumph' | 'ruin', amount: number): number {
+    return this[tokenName] + amount
   }
 
   statCheck(statName: keyof StatBlock, challengeMod?: number, isHalf?: boolean, method?: Check['rollMethod']): Check {
-    return new Check(isHalf ?  this.halfStat(statName) : this.stats[statName], challengeMod || 0, method);
+    return new Check(isHalf ?  this.statsHalf[statName] : this.stats[statName], challengeMod || 0, method);
   }
 }

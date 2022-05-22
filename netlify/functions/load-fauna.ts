@@ -26,11 +26,11 @@ const handler: Handler = async () => {
         statusCode: 200,
         body: JSON.stringify({characters, jobs, skills})
       }
-    } catch(e) {
+    } catch(e: any) {
       return {
         statusCode: 404,
         body: JSON.stringify({
-          message: 'Collection Not Found'
+          message: e.message
         })
       }
     }

@@ -33,6 +33,7 @@ export default class DiceMenu extends Vue {
     x: number
     y: number
     statName: keyof StatBlock
+    statValue: number
   }
 
   callRoll(rollMethod: Check['rollMethod']) {

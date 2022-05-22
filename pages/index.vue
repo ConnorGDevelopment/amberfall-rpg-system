@@ -1,24 +1,21 @@
 <template>
   <v-sheet>
     <v-slide-group>
-      <v-slide-item v-for="character in characters" :key="character.data.name">
+      <v-slide-item v-for="character in characters" :key="character.name">
         <v-hover v-slot="{ hover }">
           <v-card
             :color="hover ? 'secondary' : 'grey darken-3'"
-            :to="`/${character.data.name}`"
+            :to="`/${character.name}`"
             class="ma-4"
           >
             <v-card-text class="justify-center text-center">
-              <v-img
-                :src="`/characters/${character.data.name}_Full.png`"
-                contain
-              />
+              <v-img :src="`/characters/${character.name}_Full.png`" contain />
             </v-card-text>
             <v-card-title class="justify-center text-center">
-              {{ character.data.name }} {{ character.data.surname }}
+              {{ character.name }} {{ character.surname }}
             </v-card-title>
             <v-card-subtitle class="justify-center text-center">
-              {{ character.data.race }} - {{ character.data.job.name }}
+              {{ character.race }} - {{ character.job.name }}
             </v-card-subtitle>
           </v-card>
         </v-hover>
@@ -29,13 +26,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { ICharacter } from '~/model/character'
-import { IFauna } from '~/model/fauna'
+import { Character } from '~/model/character'
 
 @Component
 export default class IndexPage extends Vue {
-  get characters(): IFauna<ICharacter> {
-    return this.$store.getters.characters
+  get characters(): Character[] {
+    return this.$store.getters.allCharacters
   }
 }
 </script>

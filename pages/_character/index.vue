@@ -110,21 +110,33 @@
                           :color="'white'"
                           :hover-color="'black'"
                           :stat="stat"
-                          @callRoll="roll(statName, false, $event)"
-                          @callMenu="openMenu(statName, false, $event)"
+                          @callRoll="roll(statName, stat, $event)"
+                          @callMenu="openMenu(statName, stat, $event)"
                         />
                       </td>
                       <td>
                         <DiceButton
                           :color="'secondary'"
                           :hover-color="'white'"
-                          :stat="character.halfStat(statName)"
-                          @callRoll="roll(statName, true, $event)"
-                          @callMenu="openMenu(statName, true, $event)"
+                          :stat="character.statsHalf[statName]"
+                          @callRoll="
+                            roll(
+                              statName,
+                              character.statsHalf[statName],
+                              $event
+                            )
+                          "
+                          @callMenu="
+                            openMenu(
+                              statName,
+                              character.statsHalf[statName],
+                              $event
+                            )
+                          "
                         />
                       </td>
                       <td class="no-select">
-                        {{ stat - 50 }}
+                        {{ character.statsChallenge[statName] }}
                       </td>
                     </tr>
                   </tbody>
@@ -224,7 +236,7 @@
 
     <DiceMenu
       :menu="menu"
-      @callRoll="roll(menu.statName, menu.isHalf, $event)"
+      @callRoll="roll(menu.statName, menu.statValue, $event)"
     />
 
     <RollDrawer
@@ -237,31 +249,36 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { Character } from '~/model/character'
 import StatBlock from '~/model/stat-block'
 import Check from '~/model/check'
+import { Character } from '~/model/character'
 
 @Component
 export default class CharacterPage extends Vue {
-  get character() {
-    return new Character(
-      this.$store.state.characters.find(
-        (character: any) => character.name === this.$route.params.character
-      )
-    )
+  get character(): Character {
+    return this.$store.getters.findCharacter(this.$route.params.character)
+  }
+
+  get skills() {
+    return this.$store.getters.allSkills
   }
 
   changeHP(amount: number) {
-    this.character!.changeHP(amount)
+    this.$store.dispatch('updateHP', {
+      character: this.character,
+      amount,
+    })
   }
 
   changeToken(tokenName: 'triumph' | 'ruin', amount: number) {
-    this.character!.changeToken(tokenName, amount)
+    this.$store.dispatch('updateToken', {
+      character: this.character,
+      tokenName,
+      amount,
+    })
   }
 
   public inputHP = null
-
-  public skills = this.$store.state.skills
 
   public skillHeaders = [
     {
@@ -290,55 +307,61 @@ export default class CharacterPage extends Vue {
 
   public skillSearch = ''
 
-  public menu = {
+  public menu: {
+    show: boolean
+    x: number
+    y: number
+    statName: keyof StatBlock
+    statValue: number
+  } = {
     show: false,
     x: 0,
     y: 0,
-    statName: '',
-    isHalf: false,
+    statName: 'strength',
+    statValue: 0,
   }
 
-  openMenu(statName: keyof StatBlock, isHalf: boolean, event: any) {
+  openMenu(statName: keyof StatBlock, statValue: number, event: any) {
     this.$nextTick(() => {
       this.menu = {
         show: true,
         x: event.x,
         y: event.y,
         statName,
-        isHalf,
+        statValue,
       }
     })
   }
 
-  openDrawer(statName: keyof StatBlock, isHalf: boolean, event: any) {
+  public drawer: {
+    show: boolean
+    method: Check['rollMethod']
+    statName: keyof StatBlock
+    statValue: number
+  } = {
+    show: false,
+    method: 'flat',
+    statName: 'strength',
+    statValue: 0,
+  }
+
+  openDrawer(statName: keyof StatBlock, statValue: number, event: any) {
     if (this.character) {
       this.drawer = {
         show: true,
-        statName,
-        isHalf,
         method: event,
+        statName,
+        statValue,
       }
     }
-  }
-
-  public drawer: {
-    show: boolean
-    statName: keyof StatBlock
-    isHalf: boolean
-    method: Check['rollMethod']
-  } = {
-    show: false,
-    statName: 'strength',
-    isHalf: false,
-    method: 'flat',
   }
 
   closeDrawer() {
     this.drawer = {
       show: false,
-      statName: 'strength',
-      isHalf: false,
       method: 'flat',
+      statName: 'strength',
+      statValue: 0,
     }
   }
 }
