@@ -1,6 +1,5 @@
 <template>
   <v-app dark>
-    <Nav/>
     <v-main>
       <v-container>
         <Nuxt />
@@ -10,9 +9,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class HomePage extends Vue {
-}
+export default class HomePage extends Vue {}
 </script>

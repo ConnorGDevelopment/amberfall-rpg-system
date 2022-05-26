@@ -64,13 +64,13 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+          primary: colors.grey.darken3,
+          accent: colors.grey.lighten5,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
+          warning: colors.yellow.lighten1,
+          error: colors.red.base,
+          success: colors.green.darken3,
         },
       },
     },

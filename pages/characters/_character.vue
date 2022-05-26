@@ -249,14 +249,23 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { Context } from '@nuxt/types'
 import StatBlock from '~/model/stat-block'
 import Check from '~/model/check'
 import { Character } from '~/model/character'
 
 @Component
 export default class CharacterPage extends Vue {
-  get character(): Character {
-    return this.$store.getters.findCharacter(this.$route.params.character)
+  public character: Character = new Character(
+    this.$store.getters.findCharacter(this.$route.params.character)
+  )
+
+  async asyncData({ route, $axios, store }: Context) {
+    const test = await $axios.post('/.netlify/functions/load-character', {
+      id: store.getters.findCharacter(route.params.character).ref['@ref'].id,
+    })
+
+    return { test }
   }
 
   get skills() {
@@ -264,18 +273,11 @@ export default class CharacterPage extends Vue {
   }
 
   changeHP(amount: number) {
-    this.$store.dispatch('updateHP', {
-      character: this.character,
-      amount,
-    })
+    this.character.setCurrentHP(this.$axios, amount)
   }
 
   changeToken(tokenName: 'triumph' | 'ruin', amount: number) {
-    this.$store.dispatch('updateToken', {
-      character: this.character,
-      tokenName,
-      amount,
-    })
+    this.character.setToken(this.$axios, tokenName, amount)
   }
 
   public inputHP = null

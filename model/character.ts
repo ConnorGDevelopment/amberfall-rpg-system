@@ -1,3 +1,4 @@
+import { NuxtAxiosInstance } from "@nuxtjs/axios";
 import Check from "./check";
 import { IFauna } from "./fauna";
 import Job from "~/model/job";
@@ -21,52 +22,49 @@ export interface ICharacter {
   ruin: number;
 }
 
-export class Character implements ICharacter {
+export class Character {
   id: string;
+  private data: ICharacter;
 
-  name: string;
-  surname: string;
+  get name(): string {return this.data.name};
+  get surname(): string {return this.data.surname}
 
-  baseStats: StatBlock;
+  get baseStats(): StatBlock {return this.data.baseStats};
+  get advances(): StatBlock {return this.data.advances};
+  get otherAdvances(): number {return this.data.otherAdvances}
+  get race(): string {return this.data.race}
+  get job(): Job {return this.data.job}
 
-  advances: StatBlock;
+  get currentHP(): number {return this.data.currentHP}
+  setCurrentHP(axios: NuxtAxiosInstance, amount: number ): void {
+    if(this.currentHP + amount >= this.maxHP) {
+      this.data.currentHP = this.maxHP
+    } else if(this.currentHP + amount < this.maxHP && this.currentHP + amount >= 0) {
+      this.data.currentHP = this.data.currentHP + amount
+    } else if(this.currentHP + amount < 0) {
+      this.data.currentHP = 0
+    }
+    axios.post('/.netlify/functions/update-hp', { id: this.id, currentHP: this.currentHP })
+  }
 
-  otherAdvances: number;
 
-  race: string;
-
-  job: Job;
-
-  currentHP: number;
-
-  triumph: number;
-  ruin: number;
+  get triumph(): number {return this.data.triumph}
+  get ruin(): number {return this.data.ruin};
+  setToken(axios: NuxtAxiosInstance, tokenName: 'triumph' | 'ruin', amount: number) {
+    if(this[tokenName] + amount >= 0) {
+      this.data[tokenName] = this.data[tokenName] + amount;
+    }
+    axios.post('/.netlify/functions/update-tokens', {id: this.id, triumph: this.triumph, ruin: this.ruin})
+  }
 
   constructor(params: IFauna<ICharacter>) {
     this.id = params.ref["@ref"].id
-
-    this.name = params.data.name
-    this.surname = params.data.surname
-    this.baseStats = params.data.baseStats
-    this.advances = params.data.advances
-    this.otherAdvances = params.data.otherAdvances
-    this.race = params.data.race
-    this.job = params.data.job
-    this.currentHP = params.data.currentHP
-    this.triumph = params.data.triumph
-    this.ruin = params.data.ruin
+    this.data = params.data
   }
 
   // For Vuex
-  toJSON(excludeID?: boolean): ICharacter {
-    const data = {...this}
-    if(excludeID) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const {id, ...dataProcessed} = data
-      return dataProcessed
-    } else {
-      return data
-    }
+  toJSON(): ICharacter {
+    return this.data
   }
 
   // Stats
@@ -118,22 +116,6 @@ export class Character implements ICharacter {
   get maxHP(): number {
     const hpFortitudeBonus = Math.floor(Math.abs(this.statsChallenge.fortitude / 10))
     return (hpFortitudeBonus + this.job.bonusHP) * this.level
-  }
-
-  calcHP(amount: number): number {
-    let newHP = this.currentHP
-    if(this.currentHP + amount >= this.maxHP) {
-      newHP = this.maxHP;
-    } else if(this.currentHP + amount < this.maxHP && this.currentHP + amount >= 0) {
-      newHP = newHP + amount
-    } else if(this.currentHP + amount < 0) {
-      newHP = 0
-    }
-    return newHP;
-  }
-
-  calcToken(tokenName: 'triumph' | 'ruin', amount: number): number {
-    return this[tokenName] + amount
   }
 
   statCheck(statName: keyof StatBlock, challengeMod?: number, isHalf?: boolean, method?: Check['rollMethod']): Check {

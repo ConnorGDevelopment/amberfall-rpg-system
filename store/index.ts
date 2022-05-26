@@ -8,6 +8,7 @@ export const state = () => ({
   characters: [] as IFauna<ICharacter>[],
   jobs: [] as IFauna<Job>[],
   skills: [] as IFauna<Skill>[],
+  test: [] as any
 })
 
 export type RootState = ReturnType<typeof state>
@@ -16,10 +17,7 @@ export const getters: GetterTree<RootState, RootState> = {
   allCharacters: (state) => (state.characters.map((character: IFauna<ICharacter>) => new Character(character))),
 
   findCharacter: (state) => (characterName: string) => {
-    const character = state.characters.find((character: IFauna<ICharacter>) => character.data.name === characterName)
-    if(character) {
-      return new Character(character)
-    }
+    return state.characters.find((character: IFauna<ICharacter>) => character.data.name === characterName)
   },
 
   allSkills: (state) => (state.skills.map((skill: IFauna<Skill>) => skill.data)),
@@ -38,14 +36,6 @@ export const mutations: MutationTree<RootState> = {
       return character
     })
   },
-
-  updateCharacter: (state, payload: {character: ICharacter, id: string}) => {
-    state.characters.forEach((character: IFauna<ICharacter>) => {
-      if(character.ref['@ref'].id === payload.id) {
-        character.data = payload.character
-      }
-    })
-  }
 }
 
 export const actions: ActionTree<RootState, RootState> = {
@@ -55,18 +45,4 @@ export const actions: ActionTree<RootState, RootState> = {
     })
     commit('loadFauna', faunaData)
   },
-
-  updateHP({commit}, payload: {character: Character, amount: number}) {
-    const characterData = payload.character.toJSON()
-    characterData.currentHP = payload.character.calcHP(payload.amount)
-    commit('updateCharacter', {character: characterData, id: payload.character.id})
-    // this.$axios.post('/.netlify/functions/update-character', {character: characterData, id: payload.character.id})
-  },
-
-  updateToken({commit}, payload: {character: Character, tokenName: 'triumph' | 'ruin', amount: number}) {
-    const characterData = payload.character.toJSON()
-    characterData[payload.tokenName] = payload.character.calcToken(payload.tokenName, payload.amount)
-    commit('updateCharacter', {character: characterData, id: payload.character.id})
-    // this.$axios.post('/.netlify/functions/update-character', {character: characterData, id: payload.character.id})
-  }
 }
